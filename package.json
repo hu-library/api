@@ -4,10 +4,10 @@
   "description": "A program to help find missing books in the library",
   "scripts": {
     "test": "jest",
-    "prestart": "tsc -p src",
+    "prestart": "yarn build",
     "start": "node build",
     "lint": "tslint -p src",
-    "clean": "rm -rf build"
+    "build": "tsc -p src"
   },
   "husky": {
     "hooks": {
