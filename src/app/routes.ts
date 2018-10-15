@@ -1,7 +1,7 @@
 import { Router } from 'express';
 
-import * as something from './middleware/something';
+import * as sheet from './middleware';
 
 export const router = Router();
 
-router.get('/something', something.doSomething);
+router.get('/', sheet.getAllRows);
