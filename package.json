@@ -1,7 +1,4 @@
 {
-  "name": "book-searching",
-  "version": "1.0.0",
-  "description": "A program to help find missing books in the library",
   "scripts": {
     "test": "jest",
     "prestart": "yarn build",
