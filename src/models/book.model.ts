@@ -19,10 +19,8 @@ export class Book implements Row {
     public requiredForSeminar: boolean;
     public recommendedByProfessor: boolean;
     public requestedButNotRequired: boolean;
-    public libraryWorker: string;
     public recommendReplacement: boolean;
     public placeHold: boolean;
-    public explainedILLs: boolean;
     public electronicCopy: 'Yes' | 'No' | 'Unknown/Not Applicable';
     public markedLostBelievedReturned: boolean;
     public listedOnReserve: boolean;
@@ -42,10 +40,8 @@ export class Book implements Row {
         this.requiredForSeminar = false;
         this.recommendedByProfessor = false;
         this.requestedButNotRequired = false;
-        this.libraryWorker = '';
         this.recommendReplacement = false;
         this.placeHold = false;
-        this.explainedILLs = false;
         this.electronicCopy = 'No';
         this.markedLostBelievedReturned = false;
         this.listedOnReserve = false;

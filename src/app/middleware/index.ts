@@ -30,13 +30,29 @@ export function parseRows(rawRows: string[][]): Book[] {
    for (let row = 2; row < 26; row++) {
        const newBook: Book = new Book();
 
-       newBook.title = rawRows[row][5];
        newBook.callNumber = rawRows[row][4];
+       newBook.title = rawRows[row][5];
        newBook.author = rawRows[row][6];
        newBook.timestamp = new Date(rawRows[row][8]);
        newBook.dateNoLongerNeeded = new Date(rawRows[row][11]);
+       newBook.recommendedByProfessor = CheckCondition(/recommended/, rawRows, row);
+       newBook.requiredForClass       = CheckCondition(/class/, rawRows, row);
+       newBook.requiredForSeminar     = CheckCondition(/Capstone/, rawRows, row);
+       newBook.requestedButNotRequired = CheckCondition(/requested/, rawRows, row);
        books.push(newBook);
    }
 
    return books;
+}
+
+function CheckCondition(regex: RegExp, rows: string[][], row: number): boolean {
+    let regexArray: RegExpMatchArray|null;
+    let result: boolean = false;
+
+    regexArray = rows[row][12].match(regex);
+    if (regexArray) {
+        result = (regexArray.length > 0);
+    }
+
+    return result;
 }

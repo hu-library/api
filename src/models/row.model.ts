@@ -18,10 +18,8 @@ export interface Row {
     requiredForSeminar: boolean;
     recommendedByProfessor: boolean;
     requestedButNotRequired: boolean;
-    libraryWorker: string;
     recommendReplacement: boolean;
     placeHold: boolean;
-    explainedILLs: boolean;
     electronicCopy: 'Yes' | 'No' | 'Unknown/Not Applicable';
     markedLostBelievedReturned: boolean;
     listedOnReserve: boolean;
