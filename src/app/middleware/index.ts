@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { sheetsAPI } from '../../config';
-import {Book} from '../../models/book.model';
+import { Book } from '../../models/book.model';
+import { SearchStatus } from '../../models/searchstatus.enum';
 
 // #region Row definitions
 // const SEARCH_STATUS_ROW_ONE = 0;
@@ -22,6 +23,8 @@ const PLACE_HOLD_ROW = 16;
 // const ILL_EXPLAINED_ROW = 17;
 const ELECTRONIC_COPY_ROW = 18;
 const CHECKBOX_TWO_ROW = 19;
+
+const STATUS_ROW = 20;
 // #endregion
 
 export function getAllRows(req: Request, res: Response, next: NextFunction) {
@@ -49,8 +52,10 @@ export function writeAllRows(req: Request, res: Response, next: NextFunction) {
 
 export function parseRows(rawRows: string[][]): Book[] {
     const books: Book[] = [];
-    for (let row = 2; row < 26; row++) {
+    let row = 2;
+    while (rawRows[row][CALL_NUMBER_ROW]) {
         const newBook: Book = new Book();
+
         newBook.setUrgency(rawRows[row][URGENCY_ROW]);
         newBook.setType(rawRows[row][TYPE_ROW]);
         newBook.setPatronInfo(rawRows[row][PATRON_NAME_ROW],
@@ -60,6 +65,8 @@ export function parseRows(rawRows: string[][]): Book[] {
         newBook.checkIfOnReserveOrBelievedReturned(rawRows[row][CHECKBOX_TWO_ROW]);
         newBook.setDateNoLongerNeeded(rawRows[row][DATE_NO_LONGER_NEEDED_ROW]);
 
+        newBook.searchStatus = rawRows[row][STATUS_ROW] as SearchStatus;
+
         newBook.callNumber = rawRows[row][CALL_NUMBER_ROW];
         newBook.title = rawRows[row][TITLE_ROW];
         newBook.author = rawRows[row][AUTHOR_ROW];
@@ -68,6 +75,8 @@ export function parseRows(rawRows: string[][]): Book[] {
         newBook.placeHold = rawRows[row][PLACE_HOLD_ROW].includes('Yes');
 
         books.push(newBook);
+        row++;
     }
+
     return books;
 }
