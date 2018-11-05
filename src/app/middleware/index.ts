@@ -2,6 +2,28 @@ import { NextFunction, Request, Response } from 'express';
 import { sheetsAPI } from '../../config';
 import {Book} from '../../models/book.model';
 
+// #region Row definitions
+// const SEARCH_STATUS_ROW_ONE = 0;
+// const SEARCH_STATUS_ROW_TWO = 1;
+const URGENCY_ROW = 2;
+const TYPE_ROW = 3;
+const CALL_NUMBER_ROW = 4;
+const TITLE_ROW = 5;
+const AUTHOR_ROW = 6;
+const PATRON_NAME_ROW = 7;
+const TIMESTAMP_ROW = 8;
+const PATRON_EMAIL_ROW = 10;
+const PATRON_HNUMBER_ROW = 11;
+const DATE_NO_LONGER_NEEDED_ROW = 11;
+const CHECKBOX_ONE_ROW = 12;
+// const LIBRARY_WORKER_NAME_ROW = 13;
+const REPLACEMENT_RECOMMENDED_ROW = 14;
+const PLACE_HOLD_ROW = 15;
+// const ILL_EXPLAINED_ROW = 16;
+const ELECTRONIC_COPY_ROW = 17;
+const CHECKBOX_TWO_ROW = 18;
+// #endregion
+
 export function getAllRows(req: Request, res: Response, next: NextFunction) {
     sheetsAPI.getData((error, response) => {
         if (error) {
@@ -26,33 +48,40 @@ export function writeAllRows(req: Request, res: Response, next: NextFunction) {
 }
 
 export function parseRows(rawRows: string[][]): Book[] {
-   const books: Book[] = [];
-   for (let row = 2; row < 26; row++) {
-       const newBook: Book = new Book();
-
-       newBook.callNumber = rawRows[row][4];
-       newBook.title = rawRows[row][5];
-       newBook.author = rawRows[row][6];
-       newBook.timestamp = new Date(rawRows[row][8]);
-       newBook.dateNoLongerNeeded = new Date(rawRows[row][11]);
-       newBook.recommendedByProfessor = CheckCondition(/recommended/, rawRows, row);
-       newBook.requiredForClass       = CheckCondition(/class/, rawRows, row);
-       newBook.requiredForSeminar     = CheckCondition(/Capstone/, rawRows, row);
-       newBook.requestedButNotRequired = CheckCondition(/requested/, rawRows, row);
-       books.push(newBook);
-   }
-
-   return books;
-}
-
-function CheckCondition(regex: RegExp, rows: string[][], row: number): boolean {
-    let regexArray: RegExpMatchArray|null;
-    let result: boolean = false;
-
-    regexArray = rows[row][12].match(regex);
-    if (regexArray) {
-        result = (regexArray.length > 0);
+    const books: Book[] = [];
+    for (let row = 2; row < 26; row++) {
+        const newBook: Book = new Book();
+        newBook.setUrgency(rawRows[row][URGENCY_ROW]);
+        newBook.setType(rawRows[row][TYPE_ROW]);
+        newBook.setPatronInfo(rawRows[row][PATRON_NAME_ROW],
+            rawRows[row][PATRON_EMAIL_ROW], rawRows[row][PATRON_HNUMBER_ROW]);
+        newBook.checkIfAnyApply(rawRows[row][CHECKBOX_ONE_ROW]);
+        newBook.setElectronicCopy(rawRows[row][ELECTRONIC_COPY_ROW]);
+        newBook.checkIfOnReserveOrBelievedReturned(rawRows[row][CHECKBOX_TWO_ROW]);
+        newBook.callNumber = rawRows[row][CALL_NUMBER_ROW];
+        newBook.title = rawRows[row][TITLE_ROW];
+        newBook.author = rawRows[row][AUTHOR_ROW];
+        newBook.timestamp = new Date(rawRows[row][TIMESTAMP_ROW]);
+        newBook.dateNoLongerNeeded = new Date(rawRows[row][DATE_NO_LONGER_NEEDED_ROW]);
+        newBook.recommendReplacement = rawRows[row][REPLACEMENT_RECOMMENDED_ROW].includes('Yes');
+        newBook.placeHold = rawRows[row][PLACE_HOLD_ROW].includes('Yes');
+        //    newBook.recommendedByProfessor = CheckCondition(/recommended/, rawRows, row);
+        //    newBook.requiredForClass       = CheckCondition(/class/, rawRows, row);
+        //    newBook.requiredForSeminar     = CheckCondition(/Capstone/, rawRows, row);
+        //    newBook.requestedButNotRequired = CheckCondition(/requested/, rawRows, row);
+        books.push(newBook);
     }
-
-    return result;
+    return books;
 }
+
+// function CheckCondition(regex: RegExp, rows: string[][], row: number): boolean {
+//     let regexArray: RegExpMatchArray | null;
+//     let result: boolean = false;
+
+//     regexArray = rows[row][12].match(regex);
+//     if (regexArray) {
+//         result = (regexArray.length > 0);
+//     }
+
+//     return result;
+// }

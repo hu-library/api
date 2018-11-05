@@ -4,6 +4,14 @@ import { SearchNotes } from './searchNotes.model';
 import { ItemType } from './itemType.enum';
 import { Patron } from './patron.model';
 
+const requiredForClass = 'Is the item a REQUIRED text for a current class?';
+const requiredForSeminar = 'Is the item required for a Senior Seminar/Capstone?';
+const recommendedByProfessor = 'Is the item recommended by the professor but NOT REQUIRED for use in the current term?';
+const requestedButNotRequired = 'Is the item requested but NOT REQUIRED for use in the current term?';
+const markedLostBelievedReturned =
+    'The item has been marked as LOST in Voyager, but the patron believes they have returned it.';
+const listedOnReserve = 'The item is listed as ON RESERVE';
+
 export class Book implements Row {
     public searchStatus: SearchStatus;
     // public searchNotes: SearchNotes[];
@@ -12,7 +20,7 @@ export class Book implements Row {
     public callNumber: string;
     public title: string;
     public author: string; // might could made into another interface
-    // public patronInfo: Patron;
+    public patron: Patron;
     public timestamp: Date;
     public dateNoLongerNeeded: Date;
     public requiredForClass: boolean;
@@ -33,7 +41,7 @@ export class Book implements Row {
         this.callNumber = '';
         this.title = '';
         this.author = '';
-        // this.patronInfo = new Patron();
+        this.patron = {};
         this.timestamp = new Date();
         this.dateNoLongerNeeded = new Date();
         this.requiredForClass = false;
@@ -45,5 +53,35 @@ export class Book implements Row {
         this.electronicCopy = 'No';
         this.markedLostBelievedReturned = false;
         this.listedOnReserve = false;
+    }
+
+    public setUrgency(urgency: string) {
+        this.urgency = urgency as unknown as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    }
+
+    public setType(typeToSet: string) {
+        this.type = typeToSet as unknown as ItemType;
+    }
+
+    public checkIfAnyApply(column: string) {
+        this.requiredForClass = column.includes(requiredForClass);
+        this.requiredForSeminar = column.includes(requiredForSeminar);
+        this.recommendedByProfessor = column.includes(recommendedByProfessor);
+        this.requestedButNotRequired = column.includes(requestedButNotRequired);
+    }
+
+    public checkIfOnReserveOrBelievedReturned(column: string) {
+        this.markedLostBelievedReturned = column.includes(markedLostBelievedReturned);
+        this.listedOnReserve = column.includes(listedOnReserve);
+    }
+
+    public setPatronInfo(name: string, email: string, hNumber: string) {
+        this.patron.email = email;
+        this.patron.name = name;
+        this.patron.hNumber = hNumber;
+    }
+
+    public setElectronicCopy(elecronicCopy: string) {
+        this.electronicCopy = elecronicCopy as unknown as 'Yes' | 'No' | 'Unknown/Not Applicable';
     }
 }
