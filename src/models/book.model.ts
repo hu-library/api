@@ -34,7 +34,7 @@ export class Book implements Row {
     public listedOnReserve: boolean;
 
     constructor() {
-        this.searchStatus = 1;
+        this.searchStatus = 'Began searching';
         // this.searchNotes = new SearchNotes;
         this.urgency = 0;
         this.type = 1;
@@ -83,5 +83,14 @@ export class Book implements Row {
 
     public setElectronicCopy(elecronicCopy: string) {
         this.electronicCopy = elecronicCopy as unknown as 'Yes' | 'No' | 'Unknown/Not Applicable';
+    }
+
+    public setDateNoLongerNeeded(date: string) {
+        const myDate = date.split('/');
+        const year = Number.parseInt(myDate[2], 10);
+        const month = Number.parseInt(myDate[0], 10) + 1;
+        const day = Number.parseInt(myDate[1], 10);
+
+        this.dateNoLongerNeeded = new Date(year, month, day);
     }
 }

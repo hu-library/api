@@ -8,6 +8,10 @@ export const sheetID = 0;
 export const authClass = new ServiceAccount(creds);
 export const sheetsAPI = new GoogleSheet(authClass, spreadsheetID, sheetID);
 
+export const angularURL  = 'http://localhost:4200';
+export const corsMethods = 'GET, POST, OPTIONS, PUT, PATCH, DELETE';
+export const corsHeaders = 'X-Requested-With,Content-Type';
+
 export const defaultCallbackForAPI = (err: any, res: any) => {
     if (err) {
         console.log(`ERROR -- ${err}`);

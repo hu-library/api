@@ -14,14 +14,14 @@ const PATRON_NAME_ROW = 7;
 const TIMESTAMP_ROW = 8;
 const PATRON_EMAIL_ROW = 10;
 const PATRON_HNUMBER_ROW = 11;
-const DATE_NO_LONGER_NEEDED_ROW = 11;
-const CHECKBOX_ONE_ROW = 12;
-// const LIBRARY_WORKER_NAME_ROW = 13;
-const REPLACEMENT_RECOMMENDED_ROW = 14;
-const PLACE_HOLD_ROW = 15;
-// const ILL_EXPLAINED_ROW = 16;
-const ELECTRONIC_COPY_ROW = 17;
-const CHECKBOX_TWO_ROW = 18;
+const DATE_NO_LONGER_NEEDED_ROW = 12;
+const CHECKBOX_ONE_ROW = 13;
+// const LIBRARY_WORKER_NAME_ROW = 14;
+const REPLACEMENT_RECOMMENDED_ROW = 15;
+const PLACE_HOLD_ROW = 16;
+// const ILL_EXPLAINED_ROW = 17;
+const ELECTRONIC_COPY_ROW = 18;
+const CHECKBOX_TWO_ROW = 19;
 // #endregion
 
 export function getAllRows(req: Request, res: Response, next: NextFunction) {
@@ -58,30 +58,16 @@ export function parseRows(rawRows: string[][]): Book[] {
         newBook.checkIfAnyApply(rawRows[row][CHECKBOX_ONE_ROW]);
         newBook.setElectronicCopy(rawRows[row][ELECTRONIC_COPY_ROW]);
         newBook.checkIfOnReserveOrBelievedReturned(rawRows[row][CHECKBOX_TWO_ROW]);
+        newBook.setDateNoLongerNeeded(rawRows[row][DATE_NO_LONGER_NEEDED_ROW]);
+
         newBook.callNumber = rawRows[row][CALL_NUMBER_ROW];
         newBook.title = rawRows[row][TITLE_ROW];
         newBook.author = rawRows[row][AUTHOR_ROW];
         newBook.timestamp = new Date(rawRows[row][TIMESTAMP_ROW]);
-        newBook.dateNoLongerNeeded = new Date(rawRows[row][DATE_NO_LONGER_NEEDED_ROW]);
         newBook.recommendReplacement = rawRows[row][REPLACEMENT_RECOMMENDED_ROW].includes('Yes');
         newBook.placeHold = rawRows[row][PLACE_HOLD_ROW].includes('Yes');
-        //    newBook.recommendedByProfessor = CheckCondition(/recommended/, rawRows, row);
-        //    newBook.requiredForClass       = CheckCondition(/class/, rawRows, row);
-        //    newBook.requiredForSeminar     = CheckCondition(/Capstone/, rawRows, row);
-        //    newBook.requestedButNotRequired = CheckCondition(/requested/, rawRows, row);
+
         books.push(newBook);
     }
     return books;
 }
-
-// function CheckCondition(regex: RegExp, rows: string[][], row: number): boolean {
-//     let regexArray: RegExpMatchArray | null;
-//     let result: boolean = false;
-
-//     regexArray = rows[row][12].match(regex);
-//     if (regexArray) {
-//         result = (regexArray.length > 0);
-//     }
-
-//     return result;
-// }
