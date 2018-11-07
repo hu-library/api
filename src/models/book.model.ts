@@ -1,37 +1,30 @@
-import {Row} from './row.model';
 import { SearchStatus } from './searchstatus.enum';
-import { SearchNotes } from './searchNotes.model';
 import { ItemType } from './itemType.enum';
 import { Patron } from './patron.model';
+import { ElectronicCopy } from './electronicCopy.type';
+import { Urgency } from './urgency.type';
+import * as fromPatron from './fromPatron';
+import * as fromVoyager from './fromVoyager';
 
-const requiredForClass = 'Is the item a REQUIRED text for a current class?';
-const requiredForSeminar = 'Is the item required for a Senior Seminar/Capstone?';
-const recommendedByProfessor = 'Is the item recommended by the professor but NOT REQUIRED for use in the current term?';
-const requestedButNotRequired = 'Is the item requested but NOT REQUIRED for use in the current term?';
-const markedLostBelievedReturned =
-    'The item has been marked as LOST in Voyager, but the patron believes they have returned it.';
-const listedOnReserve = 'The item is listed as ON RESERVE';
-
-export class Book implements Row {
-    public searchStatus: SearchStatus;
-    // public searchNotes: SearchNotes[];
-    public urgency: 0|1|2|3|4|5|6|7|8|9|10;
-    public type: ItemType;
-    public callNumber: string;
-    public title: string;
-    public author: string; // might could made into another interface
-    public patron: Patron;
-    public timestamp: Date;
-    public dateNoLongerNeeded: Date;
-    public requiredForClass: boolean;
-    public requiredForSeminar: boolean;
-    public recommendedByProfessor: boolean;
-    public requestedButNotRequired: boolean;
-    public recommendReplacement: boolean;
-    public placeHold: boolean;
-    public electronicCopy: 'Yes' | 'No' | 'Unknown/Not Applicable';
-    public markedLostBelievedReturned: boolean;
-    public listedOnReserve: boolean;
+export class Book {
+    public callNumber?: string;
+    private searchStatus?: SearchStatus;
+    private urgency?: Urgency;
+    private type?: ItemType;
+    private title?: string;
+    private author?: string;
+    private patron?: Patron;
+    private timestamp?: Date;
+    private dateNoLongerNeeded?: Date;
+    private requiredForClass?: boolean;
+    private requiredForSeminar?: boolean;
+    private recommendedByProfessor?: boolean;
+    private requestedButNotRequired?: boolean;
+    private recommendReplacement?: boolean;
+    private placeHold?: boolean;
+    private electronicCopy?: ElectronicCopy;
+    private markedLostBelievedReturned?: boolean;
+    private listedOnReserve?: boolean;
 
     constructor() {
         this.searchStatus = 'Began searching';
@@ -54,6 +47,13 @@ export class Book implements Row {
         this.markedLostBelievedReturned = false;
         this.listedOnReserve = false;
     }
+    public setSearchStatus(status?: SearchStatus) {
+        if (status) {
+            this.searchStatus = status;
+        } else {
+            this.searchStatus = 'Began searching';
+        }
+    }
 
     public setUrgency(urgency: string) {
         this.urgency = urgency as unknown as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
@@ -64,15 +64,15 @@ export class Book implements Row {
     }
 
     public checkIfAnyApply(column: string) {
-        this.requiredForClass = column.includes(requiredForClass);
-        this.requiredForSeminar = column.includes(requiredForSeminar);
-        this.recommendedByProfessor = column.includes(recommendedByProfessor);
-        this.requestedButNotRequired = column.includes(requestedButNotRequired);
+        this.requiredForClass = column.includes(fromPatron.requiredForClass);
+        this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
+        this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
+        this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
     }
 
     public checkIfOnReserveOrBelievedReturned(column: string) {
-        this.markedLostBelievedReturned = column.includes(markedLostBelievedReturned);
-        this.listedOnReserve = column.includes(listedOnReserve);
+        this.markedLostBelievedReturned = column.includes(fromVoyager.markedLostBelievedReturned);
+        this.listedOnReserve = column.includes(fromVoyager.listedOnReserve);
     }
 
     public setPatronInfo(name: string, email: string, hNumber: string) {
