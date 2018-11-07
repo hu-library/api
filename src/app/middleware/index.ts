@@ -26,12 +26,11 @@ export function writeAllRows(req: Request, res: Response, next: NextFunction) {
     res.status(203).send('Writing all rows');
 }
 
-export function parseRows(rawRows: string[][]): Book[] {
-    const books: Book[] = [];
+export function parseRows(rawRows: string[][]): JSON[] {
+    const books: JSON[] = [];
     for (const row of rawRows) {
-        if (row !== rawRows[0] || row !== rawRows[1]) {
-            const newBook: Book = new Book(row);
-            books.push(newBook);
+        if (row !== rawRows[0] && row !== rawRows[1]) {
+            books.push(new Book(row).toJSON());
         }
     }
     return books;

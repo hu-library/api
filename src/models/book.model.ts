@@ -6,11 +6,14 @@ import { Urgency } from './urgency.type';
 import * as fromPatron from './fromPatron';
 import * as fromVoyager from './fromVoyager';
 import {
-    URGENCY_ROW, TYPE_ROW, PATRON_NAME_ROW, PATRON_EMAIL_ROW,
-    PATRON_HNUMBER_ROW, ELECTRONIC_COPY_ROW,
-    DATE_NO_LONGER_NEEDED_ROW, STATUS_ROW, REPLACEMENT_RECOMMENDED_ROW,
-    TIMESTAMP_ROW, PLACE_HOLD_ROW, CALL_NUMBER_ROW, TITLE_ROW,
-    AUTHOR_ROW, LISTED_ON_RESERVE_ROW, BELIEVED_RETURNED_ROW
+    URGENCY_ROW, TYPE_ROW, CALL_NUMBER_ROW, TITLE_ROW,
+    AUTHOR_ROW, PATRON_NAME_ROW, TIMESTAMP_ROW,
+    PATRON_EMAIL_ROW, PATRON_HNUMBER_ROW,
+    DATE_NOT_NEEDED_ROW, FOR_CLASS_ROW,
+    FOR_SEMINAR_ROW, BY_PROFESSOR_ROW, NOT_REQUIRED,
+    REPLACEMENT_RECOMMENDED_ROW, PLACE_HOLD_ROW,
+    ELECTRONIC_COPY_ROW, LISTED_ON_RESERVE_ROW,
+    BELIEVED_RETURNED_ROW, STATUS_ROW
 } from './rows';
 
 export class Book {
@@ -37,7 +40,29 @@ export class Book {
         this.listedOnReserve = this.ListedOnReserve(row[LISTED_ON_RESERVE_ROW]);
         this.markedLostBelievedReturned = this.BelievedReturned(row[BELIEVED_RETURNED_ROW]);
         this.placeHold = this.PlaceHold(row[PLACE_HOLD_ROW]);
-        this.recmo
+        this.recommendedByProfessor = this.RecommendedByProfessor(row[BY_PROFESSOR_ROW]);
+        this.recommendReplacement = this.RecommendReplacement(row[REPLACEMENT_RECOMMENDED_ROW]);
+        this.requestedButNotRequired = this.RequestedButNotRequired(row[NOT_REQUIRED]);
+        this.requiredForClass = this.RequiredForClass(row[FOR_CLASS_ROW]);
+        this.requiredForSeminar = this.RequiredForSeminar(row[FOR_SEMINAR_ROW]);
+        this.timestamp = this.Timestamp(row[TIMESTAMP_ROW]);
+        this.dateNoLongerNeeded = this.DateNoLongerNeeded(row[DATE_NOT_NEEDED_ROW]);
+        this.electronicCopy = this.ElectronicCopy(row[ELECTRONIC_COPY_ROW]);
+        this.type = this.Type(row[TYPE_ROW]);
+        this.patron = this.PatronInfo(row);
+        this.searchStatus = this.SearchStatus(row[STATUS_ROW]);
+        this.urgency = this.Urgency(row[URGENCY_ROW]);
+
+        this.author = row[AUTHOR_ROW];
+        this.callNumber = row[CALL_NUMBER_ROW];
+        this.title = row[TITLE_ROW];
+    }
+
+    public toJSON(): JSON {
+        const obj: any = this;
+        obj.timestamp = this.timestamp.toLocaleString();
+        obj.dateNoLongerNeeded = this.dateNoLongerNeeded.toLocaleString();
+        return obj;
     }
 
     private RequiredForClass(column: string): boolean {
