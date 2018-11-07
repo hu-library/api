@@ -1,96 +1,160 @@
 import { SearchStatus } from './searchstatus.enum';
-import { ItemType } from './itemType.enum';
+import { ItemType } from './itemType.type';
 import { Patron } from './patron.model';
 import { ElectronicCopy } from './electronicCopy.type';
 import { Urgency } from './urgency.type';
 import * as fromPatron from './fromPatron';
 import * as fromVoyager from './fromVoyager';
+import {
+    URGENCY_ROW, TYPE_ROW, PATRON_NAME_ROW, PATRON_EMAIL_ROW,
+    PATRON_HNUMBER_ROW, ELECTRONIC_COPY_ROW,
+    DATE_NO_LONGER_NEEDED_ROW, STATUS_ROW, REPLACEMENT_RECOMMENDED_ROW,
+    TIMESTAMP_ROW, PLACE_HOLD_ROW, CALL_NUMBER_ROW, TITLE_ROW,
+    AUTHOR_ROW, LISTED_ON_RESERVE_ROW, BELIEVED_RETURNED_ROW
+} from './rows';
 
 export class Book {
-    public callNumber?: string;
-    private searchStatus?: SearchStatus;
-    private urgency?: Urgency;
-    private type?: ItemType;
-    private title?: string;
-    private author?: string;
-    private patron?: Patron;
-    private timestamp?: Date;
-    private dateNoLongerNeeded?: Date;
-    private requiredForClass?: boolean;
-    private requiredForSeminar?: boolean;
-    private recommendedByProfessor?: boolean;
-    private requestedButNotRequired?: boolean;
-    private recommendReplacement?: boolean;
-    private placeHold?: boolean;
-    private electronicCopy?: ElectronicCopy;
-    private markedLostBelievedReturned?: boolean;
-    private listedOnReserve?: boolean;
+    private listedOnReserve: boolean;
+    private markedLostBelievedReturned: boolean;
+    private placeHold: boolean;
+    private recommendedByProfessor: boolean;
+    private recommendReplacement: boolean;
+    private requestedButNotRequired: boolean;
+    private requiredForClass: boolean;
+    private requiredForSeminar: boolean;
+    private timestamp: Date;
+    private dateNoLongerNeeded: Date;
+    private electronicCopy: ElectronicCopy;
+    private type: ItemType;
+    private patron: Patron;
+    private searchStatus: SearchStatus;
+    private author: string;
+    private callNumber: string;
+    private title: string;
+    private urgency: Urgency;
 
-    constructor() {
-        this.searchStatus = 'Began searching';
-        // this.searchNotes = new SearchNotes;
-        this.urgency = 0;
-        this.type = 1;
-        this.callNumber = '';
-        this.title = '';
-        this.author = '';
-        this.patron = {};
-        this.timestamp = new Date();
-        this.dateNoLongerNeeded = new Date();
-        this.requiredForClass = false;
-        this.requiredForSeminar = false;
-        this.recommendedByProfessor = false;
-        this.requestedButNotRequired = false;
-        this.recommendReplacement = false;
-        this.placeHold = false;
-        this.electronicCopy = 'No';
-        this.markedLostBelievedReturned = false;
-        this.listedOnReserve = false;
+    constructor(row: string[]) {
+        this.listedOnReserve = this.ListedOnReserve(row[LISTED_ON_RESERVE_ROW]);
+        this.markedLostBelievedReturned = this.BelievedReturned(row[BELIEVED_RETURNED_ROW]);
+        this.placeHold = this.PlaceHold(row[PLACE_HOLD_ROW]);
+        this.recmo
     }
-    public setSearchStatus(status?: SearchStatus) {
-        if (status) {
-            this.searchStatus = status;
+
+    private RequiredForClass(column: string): boolean {
+        if (column) {
+            this.requiredForClass = column.includes(fromPatron.requiredForClass);
+        }
+        return false;
+    }
+
+    private RequiredForSeminar(column: string): boolean {
+        if (column) {
+            this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
+        }
+        return false;
+    }
+
+    private RecommendedByProfessor(column: string): boolean {
+        if (column) {
+            this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
+        }
+        return false;
+    }
+
+    private RequestedButNotRequired(column: string): boolean {
+        if (column) {
+            this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
+        }
+        return false;
+    }
+
+    private ListedOnReserve(column: string): boolean {
+        if (column) {
+            return column.includes(fromVoyager.listedOnReserve);
+        }
+        return false;
+    }
+
+    private BelievedReturned(column: string): boolean {
+        if (column) {
+            return column.includes(fromVoyager.markedLostBelievedReturned);
+        }
+        return false;
+    }
+
+    private DateNoLongerNeeded(date: string): Date {
+        if (date) {
+            const myDate = date.split('/');
+            const year = Number.parseInt(myDate[2], 10);
+            const month = Number.parseInt(myDate[0], 10) + 1;
+            const day = Number.parseInt(myDate[1], 10);
+
+            return new Date(year, month, day);
         } else {
-            this.searchStatus = 'Began searching';
+            return new Date();
         }
     }
 
-    public setUrgency(urgency: string) {
-        this.urgency = urgency as unknown as 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10;
+    private ElectronicCopy(electronicCopy: string): ElectronicCopy {
+        if (electronicCopy) {
+            return electronicCopy as unknown as ElectronicCopy;
+        }
+        return 'No';
     }
 
-    public setType(typeToSet: string) {
-        this.type = typeToSet as unknown as ItemType;
+    private PlaceHold(placeHold: string): boolean {
+        if (placeHold) {
+            return placeHold.includes('Yes');
+        }
+        return false;
     }
 
-    public checkIfAnyApply(column: string) {
-        this.requiredForClass = column.includes(fromPatron.requiredForClass);
-        this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
-        this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
-        this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
+    private PatronInfo(row: string[]): Patron {
+        if (row) {
+            const email = row[PATRON_EMAIL_ROW];
+            const name = row[PATRON_NAME_ROW];
+            const hNumber = row[PATRON_HNUMBER_ROW];
+            return {
+                email,
+                hNumber,
+                name
+            };
+        }
+        return {};
     }
 
-    public checkIfOnReserveOrBelievedReturned(column: string) {
-        this.markedLostBelievedReturned = column.includes(fromVoyager.markedLostBelievedReturned);
-        this.listedOnReserve = column.includes(fromVoyager.listedOnReserve);
+    private RecommendReplacement(recommendReplacement: string): boolean {
+        if (recommendReplacement) {
+            return recommendReplacement.includes('Yes');
+        }
+        return false;
     }
 
-    public setPatronInfo(name: string, email: string, hNumber: string) {
-        this.patron.email = email;
-        this.patron.name = name;
-        this.patron.hNumber = hNumber;
+    private SearchStatus(status?: string): SearchStatus {
+        if (status) {
+            return status as SearchStatus;
+        }
+        return 'Began searching';
     }
 
-    public setElectronicCopy(elecronicCopy: string) {
-        this.electronicCopy = elecronicCopy as unknown as 'Yes' | 'No' | 'Unknown/Not Applicable';
+    private Timestamp(timestamp: string) {
+        if (timestamp) {
+            return new Date(timestamp);
+        }
+        return new Date();
     }
 
-    public setDateNoLongerNeeded(date: string) {
-        const myDate = date.split('/');
-        const year = Number.parseInt(myDate[2], 10);
-        const month = Number.parseInt(myDate[0], 10) + 1;
-        const day = Number.parseInt(myDate[1], 10);
+    private Type(typeTo: string): ItemType {
+        if (typeTo) {
+            return typeTo as ItemType;
+        }
+        return 'Bestsellers';
+    }
 
-        this.dateNoLongerNeeded = new Date(year, month, day);
+    private Urgency(urgency: string): Urgency {
+        if (urgency) {
+            return Number.parseInt(urgency, 10) as Urgency;
+        }
+        return 0;
     }
 }
