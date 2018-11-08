@@ -1,5 +1,5 @@
-// export const SEARCH_STATUS_ROW_ONE = 0;
-// export const SEARCH_STATUS_ROW_TWO = 1;
+export const SEARCH_NOTES_ONE = 0;
+export const SEARCH_NOTES_TWO = 1;
 export const URGENCY_ROW = 2;
 export const TYPE_ROW = 3;
 export const CALL_NUMBER_ROW = 4;

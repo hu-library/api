@@ -13,7 +13,8 @@ import {
     FOR_SEMINAR_ROW, BY_PROFESSOR_ROW, NOT_REQUIRED,
     REPLACEMENT_RECOMMENDED_ROW, PLACE_HOLD_ROW,
     ELECTRONIC_COPY_ROW, LISTED_ON_RESERVE_ROW,
-    BELIEVED_RETURNED_ROW, STATUS_ROW
+    BELIEVED_RETURNED_ROW, STATUS_ROW,
+    SEARCH_NOTES_ONE, SEARCH_NOTES_TWO
 } from './rows';
 
 export class Book {
@@ -29,6 +30,7 @@ export class Book {
     private dateNoLongerNeeded: Date;
     private electronicCopy: ElectronicCopy;
     private type: ItemType;
+    private searchCount: number;
     private patron: Patron;
     private searchStatus: SearchStatus;
     private author: string;
@@ -52,6 +54,7 @@ export class Book {
         this.patron = this.PatronInfo(row);
         this.searchStatus = this.SearchStatus(row[STATUS_ROW]);
         this.urgency = this.Urgency(row[URGENCY_ROW]);
+        this.searchCount = this.SearchCount(row);
 
         this.author = row[AUTHOR_ROW];
         this.callNumber = row[CALL_NUMBER_ROW];
@@ -63,6 +66,15 @@ export class Book {
         obj.timestamp = this.timestamp.toLocaleString();
         obj.dateNoLongerNeeded = this.dateNoLongerNeeded.toLocaleString();
         return obj;
+    }
+
+    private SearchCount(row: string[]): number {
+        if (row) {
+            const searchNotesOne = row[SEARCH_NOTES_ONE] ? row[SEARCH_NOTES_ONE].split(';').length : 0;
+            const searchNotesTwo = row[SEARCH_NOTES_TWO] ? row[SEARCH_NOTES_TWO].split(';').length : 0;
+            return searchNotesOne + searchNotesTwo;
+        }
+        return 0;
     }
 
     private RequiredForClass(column: string): boolean {
