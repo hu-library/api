@@ -1,7 +1,7 @@
 {
   "scripts": {
     "test": "jest",
-    "prestart": "yarn build",
+    "prestart": "cls && yarn build",
     "start": "node build",
     "lint": "tslint -p src",
     "build": "tsc -p src"
