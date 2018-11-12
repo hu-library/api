@@ -31,6 +31,7 @@ export class Book {
     private electronicCopy: ElectronicCopy;
     private type: ItemType;
     private searchCount: number;
+    private rowNumber: number;
     private patron: Patron;
     private searchStatus: SearchStatus;
     private author: string;
@@ -38,7 +39,7 @@ export class Book {
     private title: string;
     private urgency: Urgency;
 
-    constructor(row: string[]) {
+    constructor(row: string[], rowNumber: number) {
         this.listedOnReserve = this.ListedOnReserve(row[LISTED_ON_RESERVE_ROW]);
         this.markedLostBelievedReturned = this.BelievedReturned(row[BELIEVED_RETURNED_ROW]);
         this.placeHold = this.PlaceHold(row[PLACE_HOLD_ROW]);
@@ -59,6 +60,8 @@ export class Book {
         this.author = row[AUTHOR_ROW];
         this.callNumber = row[CALL_NUMBER_ROW];
         this.title = row[TITLE_ROW];
+
+        this.rowNumber = rowNumber;
     }
 
     public toJSON(): JSON {
@@ -68,6 +71,13 @@ export class Book {
         return obj;
     }
 
+    public setListedOnReserve(bool: boolean) {
+        this.listedOnReserve = bool;
+    }
+
+    public getListedOnReserve(): boolean {
+        return this.listedOnReserve;
+    }
     private SearchCount(row: string[]): number {
         if (row) {
             const searchNotesOne = row[SEARCH_NOTES_ONE] ? row[SEARCH_NOTES_ONE].split(';').length : 0;

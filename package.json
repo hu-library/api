@@ -1,10 +1,11 @@
 {
   "scripts": {
     "test": "jest",
-    "prestart": "cls && yarn build",
+    "prestart": "yarn build",
     "start": "node build",
     "lint": "tslint -p src",
-    "build": "tsc -p src"
+    "build": "tsc -p src",
+    "git": "git fetch && git pull && yarn"
   },
   "repository": {
     "type": "git",
