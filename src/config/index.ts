@@ -5,6 +5,7 @@ export const logFormat = 'dev';
 const spreadsheetID = '1HgFqak5AUZBnSCHBkKvKiGsHw8TEq7MVLWdW5SP6Eks';
 const mainSheetID = 1128497297;
 const colorKeySheetID = 539679140;
+const attributeSheetID = 1037601079;
 
 export const authClass = new ServiceAccount(creds);
 export const sheetsAPI = new GoogleSheet(authClass, spreadsheetID, mainSheetID);
