@@ -62,3 +62,4 @@ typings/
 
 build/
 src/config/credentials.json
+src/config/email.ts

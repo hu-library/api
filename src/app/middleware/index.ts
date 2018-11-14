@@ -1,5 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
-import { sheetsAPI, pageTwoSheetsAPI } from '../../config';
+import { sheetsAPI, attributeSheetsAPI } from '../../config';
 import { Book } from '../../models/book.model';
 import * as rowMap from '../../models/rows';
 
@@ -26,14 +26,12 @@ export function getAllRows(req: Request, res: Response, next: NextFunction) {
 
 export function writeAllRows(req: Request, res: Response, next: NextFunction) {
     // sorted by column then row
-    const data = [['1', '2'], ['3', '4']];
-    pageTwoSheetsAPI.setData(data, {
+    const data = [['1'] , ['2'], ['3'], ['4']];
+    attributeSheetsAPI.setData(data, {
         majorDimension: 'COLUMNS',
         range: {
-            endCol: 2,
-            endRow: 15,
             startCol: 1,
-            startRow: 13
+            startRow: 2
         },
     }, (err, response) => {
         if (err) {
