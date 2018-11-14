@@ -71,66 +71,59 @@ export class Book {
         return obj;
     }
 
-    public setListedOnReserve(bool: boolean) {
-        this.listedOnReserve = bool;
-    }
-
-    public getListedOnReserve(): boolean {
-        return this.listedOnReserve;
-    }
     private SearchCount(row: string[]): number {
         if (row) {
-            const searchNotesOne = row[SEARCH_NOTES_ONE] ? row[SEARCH_NOTES_ONE].split(';').length : 0;
-            const searchNotesTwo = row[SEARCH_NOTES_TWO] ? row[SEARCH_NOTES_TWO].split(';').length : 0;
+            const searchNotesOne = row[SEARCH_NOTES_ONE].trim() ? row[SEARCH_NOTES_ONE].split(';').length : 0;
+            const searchNotesTwo = row[SEARCH_NOTES_TWO].trim() ? row[SEARCH_NOTES_TWO].split(';').length : 0;
             return searchNotesOne + searchNotesTwo;
         }
         return 0;
     }
 
     private RequiredForClass(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             this.requiredForClass = column.includes(fromPatron.requiredForClass);
         }
         return false;
     }
 
     private RequiredForSeminar(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
         }
         return false;
     }
 
     private RecommendedByProfessor(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
         }
         return false;
     }
 
     private RequestedButNotRequired(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
         }
         return false;
     }
 
     private ListedOnReserve(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             return column.includes(fromVoyager.listedOnReserve);
         }
         return false;
     }
 
     private BelievedReturned(column: string): boolean {
-        if (column) {
+        if (column.trim()) {
             return column.includes(fromVoyager.markedLostBelievedReturned);
         }
         return false;
     }
 
     private DateNoLongerNeeded(date: string): Date {
-        if (date) {
+        if (date.trim()) {
             const myDate = date.split('/');
             const year = Number.parseInt(myDate[2], 10);
             const month = Number.parseInt(myDate[0], 10) + 1;
@@ -143,14 +136,14 @@ export class Book {
     }
 
     private ElectronicCopy(electronicCopy: string): ElectronicCopy {
-        if (electronicCopy) {
+        if (electronicCopy.trim()) {
             return electronicCopy as unknown as ElectronicCopy;
         }
         return 'No';
     }
 
     private PlaceHold(placeHold: string): boolean {
-        if (placeHold) {
+        if (placeHold.trim()) {
             return placeHold.includes('Yes');
         }
         return false;
@@ -158,9 +151,9 @@ export class Book {
 
     private PatronInfo(row: string[]): Patron {
         if (row) {
-            const email = row[PATRON_EMAIL_ROW];
-            const name = row[PATRON_NAME_ROW];
-            const hNumber = row[PATRON_HNUMBER_ROW];
+            const email = row[PATRON_EMAIL_ROW].trim();
+            const name = row[PATRON_NAME_ROW].trim();
+            const hNumber = row[PATRON_HNUMBER_ROW].trim();
             return {
                 email,
                 hNumber,
@@ -171,35 +164,35 @@ export class Book {
     }
 
     private RecommendReplacement(recommendReplacement: string): boolean {
-        if (recommendReplacement) {
+        if (recommendReplacement.trim()) {
             return recommendReplacement.includes('Yes');
         }
         return false;
     }
 
-    private SearchStatus(status?: string): SearchStatus {
-        if (status) {
+    private SearchStatus(status: string): SearchStatus {
+        if (status.trim()) {
             return status as SearchStatus;
         }
         return 'Began searching';
     }
 
     private Timestamp(timestamp: string) {
-        if (timestamp) {
+        if (timestamp.trim()) {
             return new Date(timestamp);
         }
         return new Date();
     }
 
     private Type(typeTo: string): ItemType {
-        if (typeTo) {
+        if (typeTo.trim()) {
             return typeTo as ItemType;
         }
         return 'Bestsellers';
     }
 
     private Urgency(urgency: string): Urgency {
-        if (urgency) {
+        if (urgency.trim()) {
             return Number.parseInt(urgency, 10) as Urgency;
         }
         return 0;
