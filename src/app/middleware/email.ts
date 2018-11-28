@@ -1,5 +1,5 @@
 import * as email from 'nodemailer';
-import { username as user, password as pass } from '../../config/email';
+import { user, pass } from '../../config/email';
 import { Response, NextFunction, Request } from 'express';
 
 const transporter = email.createTransport({

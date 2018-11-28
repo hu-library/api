@@ -40,6 +40,10 @@ export class Book {
     private urgency: Urgency;
 
     constructor(row: string[], rowNumber: number) {
+        this.author = row[AUTHOR_ROW];
+        this.callNumber = row[CALL_NUMBER_ROW];
+        this.title = row[TITLE_ROW];
+
         this.listedOnReserve = this.ListedOnReserve(row[LISTED_ON_RESERVE_ROW]);
         this.markedLostBelievedReturned = this.BelievedReturned(row[BELIEVED_RETURNED_ROW]);
         this.placeHold = this.PlaceHold(row[PLACE_HOLD_ROW]);
@@ -56,10 +60,6 @@ export class Book {
         this.searchStatus = this.SearchStatus(row[STATUS_ROW]);
         this.urgency = this.Urgency(row[URGENCY_ROW]);
         this.searchCount = this.SearchCount(row);
-
-        this.author = row[AUTHOR_ROW];
-        this.callNumber = row[CALL_NUMBER_ROW];
-        this.title = row[TITLE_ROW];
 
         this.rowNumber = rowNumber;
     }

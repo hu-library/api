@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import { sheetsAPI, attributeSheetsAPI } from '../../config';
 import { Book } from '../../models/book.model';
-import * as rowMap from '../../models/rows';
 
 const books: Book[] = [];
 

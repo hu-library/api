@@ -1,5 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
-import { angularURL, corsHeaders, corsMethods } from './';
+
+const angularURL = 'http://localhost:4200';
+const corsMethods = 'GET, POST, OPTIONS, PUT, PATCH, DELETE';
+const corsHeaders = 'X-Requested-With,Content-Type';
+
 export function allowCORS(req: Request, res: Response, next: NextFunction) {
     // Website you wish to allow to connect
     res.setHeader('Access-Control-Allow-Origin', angularURL);
