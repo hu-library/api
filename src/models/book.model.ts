@@ -5,17 +5,8 @@ import { ElectronicCopy } from './electronicCopy.type';
 import { Urgency } from './urgency.type';
 import * as fromPatron from './fromPatron';
 import * as fromVoyager from './fromVoyager';
-import {
-    URGENCY_ROW, TYPE_ROW, CALL_NUMBER_ROW, TITLE_ROW,
-    AUTHOR_ROW, PATRON_NAME_ROW, TIMESTAMP_ROW,
-    PATRON_EMAIL_ROW, PATRON_HNUMBER_ROW,
-    DATE_NOT_NEEDED_ROW, FOR_CLASS_ROW,
-    FOR_SEMINAR_ROW, BY_PROFESSOR_ROW, NOT_REQUIRED,
-    REPLACEMENT_RECOMMENDED_ROW, PLACE_HOLD_ROW,
-    ELECTRONIC_COPY_ROW, LISTED_ON_RESERVE_ROW,
-    BELIEVED_RETURNED_ROW, STATUS_ROW,
-    SEARCH_NOTES_ONE, SEARCH_NOTES_TWO
-} from './rows';
+import { rows } from './rows';
+import { SearchLocation, parseLocation } from './searchLocations.type';
 
 export class Book {
     private listedOnReserve: boolean;
@@ -38,29 +29,30 @@ export class Book {
     private callNumber: string;
     private title: string;
     private urgency: Urgency;
+    private searchedLocations: Map<SearchLocation, boolean>;
 
     constructor(row: string[], rowNumber: number) {
-        this.author = row[AUTHOR_ROW];
-        this.callNumber = row[CALL_NUMBER_ROW];
-        this.title = row[TITLE_ROW];
+        this.author = row[rows.author];
+        this.callNumber = row[rows.callNumber];
+        this.title = row[rows.title];
 
-        this.listedOnReserve = this.ListedOnReserve(row[LISTED_ON_RESERVE_ROW]);
-        this.markedLostBelievedReturned = this.BelievedReturned(row[BELIEVED_RETURNED_ROW]);
-        this.placeHold = this.PlaceHold(row[PLACE_HOLD_ROW]);
-        this.recommendedByProfessor = this.RecommendedByProfessor(row[BY_PROFESSOR_ROW]);
-        this.recommendReplacement = this.RecommendReplacement(row[REPLACEMENT_RECOMMENDED_ROW]);
-        this.requestedButNotRequired = this.RequestedButNotRequired(row[NOT_REQUIRED]);
-        this.requiredForClass = this.RequiredForClass(row[FOR_CLASS_ROW]);
-        this.requiredForSeminar = this.RequiredForSeminar(row[FOR_SEMINAR_ROW]);
-        this.timestamp = this.Timestamp(row[TIMESTAMP_ROW]);
-        this.dateNoLongerNeeded = this.DateNoLongerNeeded(row[DATE_NOT_NEEDED_ROW]);
-        this.electronicCopy = this.ElectronicCopy(row[ELECTRONIC_COPY_ROW]);
-        this.type = this.Type(row[TYPE_ROW]);
+        this.listedOnReserve = this.ListedOnReserve(row[rows.onReserve]);
+        this.markedLostBelievedReturned = this.BelievedReturned(row[rows.believedReturned]);
+        this.placeHold = this.PlaceHold(row[rows.placeHold]);
+        this.recommendedByProfessor = this.RecommendedByProfessor(row[rows.byProfessor]);
+        this.recommendReplacement = this.RecommendReplacement(row[rows.replacementNeeded]);
+        this.requestedButNotRequired = this.RequestedButNotRequired(row[rows.notRequired]);
+        this.requiredForClass = this.RequiredForClass(row[rows.forClass]);
+        this.requiredForSeminar = this.RequiredForSeminar(row[rows.forSeminar]);
+        this.timestamp = this.Timestamp(row[rows.timestamp]);
+        this.dateNoLongerNeeded = this.DateNoLongerNeeded(row[rows.dateNotNeeded]);
+        this.electronicCopy = this.ElectronicCopy(row[rows.electronicCopy]);
+        this.type = this.Type(row[rows.bookType]);
         this.patron = this.PatronInfo(row);
-        this.searchStatus = this.SearchStatus(row[STATUS_ROW]);
-        this.urgency = this.Urgency(row[URGENCY_ROW]);
-        this.searchCount = this.SearchCount(row);
-
+        this.searchStatus = this.SearchStatus(row[rows.searchStatus]);
+        this.urgency = this.Urgency(row[rows.urgency]);
+        this.searchCount = this.SearchCount(row[rows.searchCount]);
+        this.searchedLocations = this.SearchedLocations(row[rows.searchLocations]);
         this.rowNumber = rowNumber;
     }
 
@@ -71,52 +63,61 @@ export class Book {
         return obj;
     }
 
-    private SearchCount(row: string[]): number {
-        if (row) {
-            const searchNotesOne = row[SEARCH_NOTES_ONE].trim() ? row[SEARCH_NOTES_ONE].split(';').length : 0;
-            const searchNotesTwo = row[SEARCH_NOTES_TWO].trim() ? row[SEARCH_NOTES_TWO].split(';').length : 0;
-            return searchNotesOne + searchNotesTwo;
+    private SearchedLocations(column: string): Map<SearchLocation, boolean> {
+        const result = new Map<SearchLocation, boolean>();
+        if (column && column.trim()) {
+            const locations = column.split(',');
+            for (const loc of locations) {
+                result.set(parseLocation(loc), true);
+            }
+        }
+        return result;
+    }
+
+    private SearchCount(column: string): number {
+        if (column && column.trim()) {
+            this.searchCount = Number.parseInt(column.trim(), 10);
         }
         return 0;
     }
 
     private RequiredForClass(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             this.requiredForClass = column.includes(fromPatron.requiredForClass);
         }
         return false;
     }
 
     private RequiredForSeminar(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
         }
         return false;
     }
 
     private RecommendedByProfessor(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
         }
         return false;
     }
 
     private RequestedButNotRequired(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
         }
         return false;
     }
 
     private ListedOnReserve(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             return column.includes(fromVoyager.listedOnReserve);
         }
         return false;
     }
 
     private BelievedReturned(column: string): boolean {
-        if (column.trim()) {
+        if (column && column.trim()) {
             return column.includes(fromVoyager.markedLostBelievedReturned);
         }
         return false;
@@ -151,9 +152,9 @@ export class Book {
 
     private PatronInfo(row: string[]): Patron {
         if (row) {
-            const email = row[PATRON_EMAIL_ROW].trim();
-            const name = row[PATRON_NAME_ROW].trim();
-            const hNumber = row[PATRON_HNUMBER_ROW].trim();
+            const email = row[rows.patronEmail].trim();
+            const name = row[rows.patronName].trim();
+            const hNumber = row[rows.patronHNumber].trim();
             return {
                 email,
                 hNumber,
