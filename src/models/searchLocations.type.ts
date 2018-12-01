@@ -11,7 +11,8 @@ export type SearchLocation =
 'Entire Section' |
 'Switched Letters' |
 'Number Mistakes' |
-'Brewer Collection';
+'Brewer Collection' |
+'Mending/Relettering';
 
 export function parseLocation(location: string) {
     switch (location && location.trim().toUpperCase()) {
@@ -28,6 +29,7 @@ export function parseLocation(location: string) {
         case 'SL': return 'Switched Letters';
         case 'NM': return 'Number Mistakes';
         case 'BC': return 'Brewer Collection';
+        case 'MR': return 'Mending/Relettering';
         default: return 'Home';
     }
 }

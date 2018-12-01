@@ -66,7 +66,7 @@ export class Book {
     private SearchedLocations(column: string): Map<SearchLocation, boolean> {
         const result = new Map<SearchLocation, boolean>();
         if (column && column.trim()) {
-            const locations = column.split(',');
+            const locations = column.split(', ');
             for (const loc of locations) {
                 result.set(parseLocation(loc), true);
             }
