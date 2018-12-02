@@ -57,9 +57,23 @@ export class Book {
     }
 
     public toJSON(): JSON {
-        const obj: any = this;
-        obj.timestamp = this.timestamp.toLocaleString();
-        obj.dateNoLongerNeeded = this.dateNoLongerNeeded.toLocaleString();
+        const obj: any = new Object();
+        for (const prop in this) {
+            if (prop && prop !== 'searchedLocation') {
+                obj[prop] = this[prop];
+                if (prop === 'timestamp') {
+                    obj[prop] = this[prop].toLocaleString();
+                } else if (prop === 'dateNoLongerNeeded') {
+                    obj[prop] = this[prop].toLocaleString();
+                }
+            }
+        }
+        obj.searchedLocations = {};
+        if (this.searchedLocations.size > 0) {
+            for (const [k, v] of this.searchedLocations) {
+                obj.searchedLocations[k] = v;
+            }
+        }
         return obj;
     }
 

@@ -32,7 +32,6 @@ export function sendMail(req: Request, res: Response, next: NextFunction) {
         if (error) {
             console.log(error);
         } else {
-            console.log('Email sent: ' + info.response);
             res.status(200).json({
                 message: 'Email sent: ' + info.response,
                 info
