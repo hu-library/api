@@ -2,7 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import { sheetsAPI, attributeSheetsAPI } from '../../config';
 import { Book } from '../../models/book.model';
 
-const books: Book[] = [];
+export const books: Book[] = [];
 
 export function setBooks() {
     sheetsAPI.getData((error, response) => {

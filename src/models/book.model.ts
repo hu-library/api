@@ -5,7 +5,7 @@ import { ElectronicCopy } from './electronicCopy.type';
 import { Urgency } from './urgency.type';
 import * as fromPatron from './fromPatron';
 import * as fromVoyager from './fromVoyager';
-import { rows } from './rows';
+import { columns } from './columns';
 import { SearchLocation, parseLocation } from './searchLocations.type';
 
 export class Book {
@@ -32,27 +32,27 @@ export class Book {
     private searchedLocations: Map<SearchLocation, boolean>;
 
     constructor(row: string[], rowNumber: number) {
-        this.author = row[rows.author];
-        this.callNumber = row[rows.callNumber];
-        this.title = row[rows.title];
+        this.author = row[columns.author];
+        this.callNumber = row[columns.callNumber];
+        this.title = row[columns.title];
 
-        this.listedOnReserve = this.ListedOnReserve(row[rows.onReserve]);
-        this.markedLostBelievedReturned = this.BelievedReturned(row[rows.believedReturned]);
-        this.placeHold = this.PlaceHold(row[rows.placeHold]);
-        this.recommendedByProfessor = this.RecommendedByProfessor(row[rows.byProfessor]);
-        this.recommendReplacement = this.RecommendReplacement(row[rows.replacementNeeded]);
-        this.requestedButNotRequired = this.RequestedButNotRequired(row[rows.notRequired]);
-        this.requiredForClass = this.RequiredForClass(row[rows.forClass]);
-        this.requiredForSeminar = this.RequiredForSeminar(row[rows.forSeminar]);
-        this.timestamp = this.Timestamp(row[rows.timestamp]);
-        this.dateNoLongerNeeded = this.DateNoLongerNeeded(row[rows.dateNotNeeded]);
-        this.electronicCopy = this.ElectronicCopy(row[rows.electronicCopy]);
-        this.type = this.Type(row[rows.bookType]);
+        this.listedOnReserve = this.ListedOnReserve(row[columns.onReserve]);
+        this.markedLostBelievedReturned = this.BelievedReturned(row[columns.believedReturned]);
+        this.placeHold = this.PlaceHold(row[columns.placeHold]);
+        this.recommendedByProfessor = this.RecommendedByProfessor(row[columns.byProfessor]);
+        this.recommendReplacement = this.RecommendReplacement(row[columns.replacementNeeded]);
+        this.requestedButNotRequired = this.RequestedButNotRequired(row[columns.notRequired]);
+        this.requiredForClass = this.RequiredForClass(row[columns.forClass]);
+        this.requiredForSeminar = this.RequiredForSeminar(row[columns.forSeminar]);
+        this.timestamp = this.Timestamp(row[columns.timestamp]);
+        this.dateNoLongerNeeded = this.DateNoLongerNeeded(row[columns.dateNotNeeded]);
+        this.electronicCopy = this.ElectronicCopy(row[columns.electronicCopy]);
+        this.type = this.Type(row[columns.bookType]);
         this.patron = this.PatronInfo(row);
-        this.searchStatus = this.SearchStatus(row[rows.searchStatus]);
-        this.urgency = this.Urgency(row[rows.urgency]);
-        this.searchCount = this.SearchCount(row[rows.searchCount]);
-        this.searchedLocations = this.SearchedLocations(row[rows.searchLocations]);
+        this.searchStatus = this.SearchStatus(row[columns.searchStatus]);
+        this.urgency = this.Urgency(row[columns.urgency]);
+        this.searchCount = this.SearchCount(row[columns.searchCount]);
+        this.searchedLocations = this.SearchedLocations(row[columns.searchLocations]);
         this.rowNumber = rowNumber;
     }
 
@@ -75,6 +75,14 @@ export class Book {
             }
         }
         return obj;
+    }
+
+    public getCallNumber() {
+        return this.callNumber;
+    }
+
+    public getRowNumber() {
+        return this.rowNumber;
     }
 
     private SearchedLocations(column: string): Map<SearchLocation, boolean> {
@@ -166,9 +174,9 @@ export class Book {
 
     private PatronInfo(row: string[]): Patron {
         if (row) {
-            const email = row[rows.patronEmail].trim();
-            const name = row[rows.patronName].trim();
-            const hNumber = row[rows.patronHNumber].trim();
+            const email = row[columns.patronEmail].trim();
+            const name = row[columns.patronName].trim();
+            const hNumber = row[columns.patronHNumber].trim();
             return {
                 email,
                 hNumber,

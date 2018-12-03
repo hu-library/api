@@ -21,7 +21,7 @@ const options: Options = {
     from: user,
     to: 'bgoff1@harding.edu',
     subject: 'HU BOT',
-    text: 'Does this really work ? ? ? ? ? ?'
+    text: 'Does this really work '
 };
 
 export function sendMail(req: Request, res: Response, next: NextFunction) {
