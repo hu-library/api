@@ -85,6 +85,10 @@ export class Book {
         return this.rowNumber;
     }
 
+    public updateSearchStatus(status: string) {
+        this.searchStatus = this.SearchStatus(status);
+    }
+
     private SearchedLocations(column: string): Map<SearchLocation, boolean> {
         const result = new Map<SearchLocation, boolean>();
         if (column && column.trim()) {

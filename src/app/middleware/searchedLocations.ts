@@ -3,6 +3,7 @@ import { sheetsAPI } from '../../config/index';
 import { books } from './';
 import { columns } from '../../models/columns';
 import { createLocationAcronym, SearchLocation } from '../../models/searchLocations.type';
+
 export function getBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
     for (const book of books) {
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
@@ -13,6 +14,9 @@ export function getBook(req: Request, res: Response, next: NextFunction, callNum
 }
 
 function getAcronymsArrayAsString(locations: SearchLocation[]) {
+    if (!locations) {
+        return '';
+    }
     const array = [];
     for (const loc of locations) {
         array.push(createLocationAcronym(loc));
@@ -29,10 +33,8 @@ function getAcronymsArrayAsString(locations: SearchLocation[]) {
 }
 
 export function updateSearchedLocation(req: Request, res: Response) {
-    console.log(res.locals.book);
     const locations = getAcronymsArrayAsString(req.body.locations);
-    console.log(locations);
-    if (res.locals.book && req.body.locations) {
+    if (res.locals.book && locations !== '') {
         const data = [ [ locations ] ];
         sheetsAPI.setData(data,  {
             majorDimension: 'COLUMNS',

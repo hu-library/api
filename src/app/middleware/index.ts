@@ -2,16 +2,17 @@ import { NextFunction, Request, Response } from 'express';
 import { sheetsAPI, attributeSheetsAPI } from '../../config';
 import { Book } from '../../models/book.model';
 
-export const books: Book[] = [];
+export let books: Book[] = [];
 
-export function setBooks() {
+export function setBooks(req: Request, res: Response, next: NextFunction) {
     sheetsAPI.getData((error, response) => {
         if (error) {
-            console.log(error);
+            res.status(404).json(error);
         } else if (response) {
             addBooks(response);
+            next();
         } else {
-            console.log({
+            res.status(404).json({
                 error,
                 response
             });
@@ -43,6 +44,7 @@ export function writeAllRows(req: Request, res: Response, next: NextFunction) {
 }
 
 function addBooks(rawRows: string[][]): void {
+    books = [];
     for (let i = 0; i < rawRows.length; i++) {
         const row = rawRows[i];
         if (row !== rawRows[0] && row !== rawRows[1] && checkRow(row)) {
