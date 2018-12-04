@@ -31,6 +31,7 @@ function checkStatus(status: string) {
 
 export function updateBookStatus(req: Request, res: Response) {
     const status = checkStatus(req.body.status);
+    console.log(req.body.status);
     if (res.locals.book && status !== '') {
         const data = [ [ status ] ];
         sheetsAPI.setData(data, {
