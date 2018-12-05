@@ -1,7 +1,6 @@
 import { Request, Response } from 'express';
 import { sheetsAPI } from '../../config/';
 import { columns } from '../../models/columns';
-import { books } from '.';
 
 function checkStatus(status: string) {
     if (!status) {
@@ -20,18 +19,8 @@ function checkStatus(status: string) {
     }
 }
 
-// function updateBooks(update: number, status: string) {
-//     for (const book of books) {
-//         if (book.getRowNumber() === update) {
-//             book.updateSearchStatus(status);
-//             return;
-//         }
-//     }
-// }
-
 export function updateBookStatus(req: Request, res: Response) {
     const status = checkStatus(req.body.status);
-    console.log(req.body.status);
     if (res.locals.book && status !== '') {
         const data = [ [ status ] ];
         sheetsAPI.setData(data, {
@@ -45,7 +34,6 @@ export function updateBookStatus(req: Request, res: Response) {
                 console.log(err);
                 res.status(404).json(err);
             } else if (response) {
-                // updateBooks(res.locals.book, status);
                 res.status(200).json(response);
             }
         });
