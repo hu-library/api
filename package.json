@@ -1,6 +1,5 @@
 {
   "scripts": {
-    "test": "jest",
     "prestart": "yarn build",
     "start": "nodemon build",
     "lint": "tslint -p src",
@@ -9,13 +8,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/hu-library/book-searching.git"
+    "url": "git+https://github.com/hu-library/api.git"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/hu-library/book-searching/issues"
+    "url": "https://github.com/hu-library/api/issues"
   },
-  "homepage": "https://github.com/hu-library/book-searching#readme",
+  "homepage": "https://github.com/hu-library/api#readme",
   "dependencies": {
     "body-parser": "^1.18.3",
     "express": "^4.16.3",
