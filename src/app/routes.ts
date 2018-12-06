@@ -10,8 +10,9 @@ export const router = Router();
 router.use(sheet.setBooks);
 router.get('/', sheet.getAllRows);
 router.get('/write', sheet.writeAllRows);
-router.post('/email', email.sendMail);
 
 router.param('book', location.getBook);
 router.post('/searched/:book', location.updateSearchedLocation);
 router.post('/status/:book', status.updateBookStatus);
+router.post('/decision', email.decision);
+router.post('/look-again', email.lookAgain);

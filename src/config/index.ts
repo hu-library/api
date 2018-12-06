@@ -22,3 +22,5 @@ export const defaultCallbackForAPI = (err: any, res: any) => {
 
 export const pageTwoSheetsAPI = new GoogleSheet(authClass, spreadsheetID, colorKeySheetID);
 export const attributeSheetsAPI = new GoogleSheet(authClass, spreadsheetID, attributeSheetID);
+
+export const subjectStart = 'Library book searching bot: ';
