@@ -9,7 +9,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const google_sheets_manager_1 = require("google-sheets-manager");
 const creds = __importStar(require("./credentials.json"));
-exports.serverPort = 8000;
+exports.serverPort = process.env.PORT || 8000;
 exports.logFormat = 'dev';
 exports.backendURL = `http://localhost:${exports.serverPort}/`;
 const spreadsheetID = '1HgFqak5AUZBnSCHBkKvKiGsHw8TEq7MVLWdW5SP6Eks';
