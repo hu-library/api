@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const angularURL = 'http://localhost:4200';
+const angularURL = process.env.FRONTEND_URL || 'http://localhost:4200';
 const corsMethods = 'GET, POST, OPTIONS, PUT, PATCH, DELETE';
 const corsHeaders = 'X-Requested-With,Content-Type';
 function allowCORS(req, res, next) {
