@@ -9,6 +9,7 @@ function getBook(req, res, next, callNumber) {
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
             res.locals.book = book.getRowNumber();
             res.locals.status = book.getStatus();
+            res.locals.searchCount = book.getSearchCount();
         }
     }
     next();

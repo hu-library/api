@@ -9,6 +9,7 @@ interface Response extends Res {
     locals: {
         book?: number;
         status?: SearchStatus;
+        searchCount?: number;
     };
 }
 
@@ -17,6 +18,7 @@ export function getBook(req: Request, res: Response, next: NextFunction, callNum
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
             res.locals.book = book.getRowNumber();
             res.locals.status = book.getStatus();
+            res.locals.searchCount = book.getSearchCount();
         }
     }
     next();

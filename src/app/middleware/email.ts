@@ -18,22 +18,6 @@ interface Options {
     text: string;
 }
 
-// export function sendMail(req: Request, res: Response, next: NextFunction) {
-//     if (req.body.text && req.body.text.trim()) {
-//         options.text = req.body.text.trim();
-//     }
-//     transporter.sendMail(options, (error, info) => {
-//         if (error) {
-//             console.log(error);
-//         } else {
-//             res.status(200).json({
-//                 message: 'Email sent: ' + info.response,
-//                 info
-//             });
-//         }
-//     });
-// }
-
 export function decision(req: Request, res: Response) {
     if (req.body.title && req.body.callNumber && req.body.author && req.body.patron) {
         const patron = req.body.patron;

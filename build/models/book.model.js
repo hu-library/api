@@ -56,6 +56,9 @@ class Book {
         }
         return obj;
     }
+    getSearchCount() {
+        return this.searchCount;
+    }
     getCallNumber() {
         return this.callNumber;
     }

@@ -23,6 +23,20 @@ function checkStatus(status) {
 function updateBookStatus(req, res) {
     const status = checkStatus(req.body.status);
     if (res.locals.book && status !== '') {
+        if (res.locals.searchCount) {
+            const searchCount = [[res.locals.searchCount + 1]];
+            config_1.sheetsAPI.setData(searchCount, {
+                majorDimension: 'COLUMNS',
+                range: {
+                    startCol: columns_1.columns.searchCount,
+                    startRow: res.locals.book + 1
+                }
+            }, (err) => {
+                if (err) {
+                    console.log(err);
+                }
+            });
+        }
         const data = [[status]];
         config_1.sheetsAPI.setData(data, {
             majorDimension: 'COLUMNS',

@@ -77,6 +77,10 @@ export class Book {
         return obj;
     }
 
+    public getSearchCount() {
+        return this.searchCount;
+    }
+
     public getCallNumber() {
         return this.callNumber;
     }
