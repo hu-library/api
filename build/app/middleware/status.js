@@ -23,7 +23,7 @@ function checkStatus(status) {
 function updateBookStatus(req, res) {
     const status = checkStatus(req.body.status);
     if (res.locals.book && status !== '') {
-        if (res.locals.searchCount) {
+        if (res.locals.searchCount !== null && res.locals.searchCount !== undefined) {
             const searchCount = [[res.locals.searchCount + 1]];
             config_1.sheetsAPI.setData(searchCount, {
                 majorDimension: 'COLUMNS',
