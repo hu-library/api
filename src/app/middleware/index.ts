@@ -7,14 +7,18 @@ export let books: Book[] = [];
 export function setBooks(req: Request, res: Response, next: NextFunction) {
     sheetsAPI.getData((error, response) => {
         if (error) {
-            res.status(404).json(error);
+            res.status(404).json({
+                error,
+                message: 'error exists'
+            });
         } else if (response) {
             addBooks(response);
             next();
         } else {
             res.status(404).json({
                 error,
-                response
+                response,
+                message: 'error and response do not exist'
             });
         }
     });

@@ -59,6 +59,3 @@ typings/
 
 # next.js build output
 .next
-
-src/config/credentials.json
-src/config/email.ts

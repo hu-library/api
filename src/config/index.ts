@@ -9,16 +9,18 @@ const mainSheetID = 1128497297;
 const colorKeySheetID = 539679140;
 const attributeSheetID = 1037601079;
 
-export const authClass = new ServiceAccount(creds);
-export const sheetsAPI = new GoogleSheet(authClass, spreadsheetID, mainSheetID);
+console.log(creds);
 
-export const defaultCallbackForAPI = (err: any, res: any) => {
+export const authClass = new ServiceAccount(creds);
+authClass.ensureValid((err, res) => {
     if (err) {
         console.log(`ERROR -- ${err}`);
-        throw err;
+        // throw err;
+    } else {
+        console.log(res);
     }
-    console.log(res);
-};
+});
+export const sheetsAPI = new GoogleSheet(authClass, spreadsheetID, mainSheetID);
 
 export const pageTwoSheetsAPI = new GoogleSheet(authClass, spreadsheetID, colorKeySheetID);
 export const attributeSheetsAPI = new GoogleSheet(authClass, spreadsheetID, attributeSheetID);

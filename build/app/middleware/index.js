@@ -6,7 +6,10 @@ exports.books = [];
 function setBooks(req, res, next) {
     config_1.sheetsAPI.getData((error, response) => {
         if (error) {
-            res.status(404).json(error);
+            res.status(404).json({
+                error,
+                message: 'error exists'
+            });
         }
         else if (response) {
             addBooks(response);
@@ -15,7 +18,8 @@ function setBooks(req, res, next) {
         else {
             res.status(404).json({
                 error,
-                response
+                response,
+                message: 'error and response do not exist'
             });
         }
     });
