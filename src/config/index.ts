@@ -1,5 +1,5 @@
 import { GoogleSheet, ServiceAccount } from 'google-sheets-manager';
-import * as creds from './credentials.json';
+import creds from './credentials';
 export const serverPort = process.env.PORT || 8000;
 export const logFormat = 'dev';
 export const backendURL = `http://localhost:${serverPort}/`;
