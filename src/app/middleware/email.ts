@@ -21,8 +21,6 @@ interface Options {
 export function decision(req: Request, res: Response) {
     if (req.body.title && req.body.callNumber && req.body.author && req.body.patron) {
         const patron = req.body.patron;
-        console.log(patron);
-        console.log(patron.hNumber);
         const options: Options = {
             from: user,
             to,
@@ -59,7 +57,6 @@ Patron H Number: ${patron.hNumber}`;
 export function lookAgain(req: Request, res: Response) {
     if (req.body.title && req.body.callNumber && req.body.author && req.body.patron) {
         const patron = req.body.patron;
-        console.log(patron);
         const options: Options = {
             from: user,
             to,

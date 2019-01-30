@@ -14,8 +14,6 @@ authClass.ensureValid((err, res) => {
     if (err) {
         console.log(`ERROR -- ${err}`);
         // throw err;
-    } else {
-        console.log(res);
     }
 });
 export const sheetsAPI = new GoogleSheet(authClass, spreadsheetID, mainSheetID);

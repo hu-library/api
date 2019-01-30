@@ -20,8 +20,6 @@ const transporter = email.createTransport({
 function decision(req, res) {
     if (req.body.title && req.body.callNumber && req.body.author && req.body.patron) {
         const patron = req.body.patron;
-        console.log(patron);
-        console.log(patron.hNumber);
         const options = {
             from: email_1.user,
             to: email_1.to,
@@ -60,7 +58,6 @@ exports.decision = decision;
 function lookAgain(req, res) {
     if (req.body.title && req.body.callNumber && req.body.author && req.body.patron) {
         const patron = req.body.patron;
-        console.log(patron);
         const options = {
             from: email_1.user,
             to: email_1.to,

@@ -18,9 +18,6 @@ exports.authClass.ensureValid((err, res) => {
         console.log(`ERROR -- ${err}`);
         // throw err;
     }
-    else {
-        console.log(res);
-    }
 });
 exports.sheetsAPI = new google_sheets_manager_1.GoogleSheet(exports.authClass, spreadsheetID, mainSheetID);
 exports.pageTwoSheetsAPI = new google_sheets_manager_1.GoogleSheet(exports.authClass, spreadsheetID, colorKeySheetID);

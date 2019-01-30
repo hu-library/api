@@ -82,35 +82,32 @@ class Book {
         return result;
     }
     SearchCount(column) {
-        if (this.title.includes('HTML')) {
-            console.log(column);
-        }
         if (column && column.trim()) {
-            this.searchCount = Number.parseInt(column.trim(), 10);
+            return Number.parseInt(column.trim(), 10);
         }
         return 0;
     }
     RequiredForClass(column) {
         if (column && column.trim()) {
-            this.requiredForClass = column.includes(fromPatron.requiredForClass);
+            return column.includes(fromPatron.requiredForClass);
         }
         return false;
     }
     RequiredForSeminar(column) {
         if (column && column.trim()) {
-            this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
+            return column.includes(fromPatron.requiredForSeminar);
         }
         return false;
     }
     RecommendedByProfessor(column) {
         if (column && column.trim()) {
-            this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
+            return column.includes(fromPatron.recommendedByProfessor);
         }
         return false;
     }
     RequestedButNotRequired(column) {
         if (column && column.trim()) {
-            this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
+            return column.includes(fromPatron.requestedButNotRequired);
         }
         return false;
     }

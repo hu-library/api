@@ -109,39 +109,36 @@ export class Book {
     }
 
     private SearchCount(column: string): number {
-        if (this.title.includes('HTML')) {
-            console.log(column);
-        }
         if (column && column.trim()) {
-            this.searchCount = Number.parseInt(column.trim(), 10);
+            return Number.parseInt(column.trim(), 10);
         }
         return 0;
     }
 
     private RequiredForClass(column: string): boolean {
         if (column && column.trim()) {
-            this.requiredForClass = column.includes(fromPatron.requiredForClass);
+            return column.includes(fromPatron.requiredForClass);
         }
         return false;
     }
 
     private RequiredForSeminar(column: string): boolean {
         if (column && column.trim()) {
-            this.requiredForSeminar = column.includes(fromPatron.requiredForSeminar);
+            return column.includes(fromPatron.requiredForSeminar);
         }
         return false;
     }
 
     private RecommendedByProfessor(column: string): boolean {
         if (column && column.trim()) {
-            this.recommendedByProfessor = column.includes(fromPatron.recommendedByProfessor);
+            return column.includes(fromPatron.recommendedByProfessor);
         }
         return false;
     }
 
     private RequestedButNotRequired(column: string): boolean {
         if (column && column.trim()) {
-            this.requestedButNotRequired = column.includes(fromPatron.requestedButNotRequired);
+            return column.includes(fromPatron.requestedButNotRequired);
         }
         return false;
     }
