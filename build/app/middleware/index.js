@@ -25,30 +25,10 @@ function setBooks(req, res, next) {
     });
 }
 exports.setBooks = setBooks;
-function getAllRows(req, res, next) {
+function getAllRows(req, res) {
     res.status(200).json(parseRows());
 }
 exports.getAllRows = getAllRows;
-function writeAllRows(req, res, next) {
-    // sorted by column then row
-    const data = [['1'], ['2'], ['3'], ['4']];
-    config_1.attributeSheetsAPI.setData(data, {
-        majorDimension: 'COLUMNS',
-        range: {
-            startCol: 1,
-            startRow: 2
-        },
-    }, (err, response) => {
-        if (err) {
-            console.log(err);
-            res.status(404).json(err);
-        }
-        else if (response) {
-            res.status(200).json(response);
-        }
-    });
-}
-exports.writeAllRows = writeAllRows;
 function addBooks(rawRows) {
     exports.books = [];
     for (let i = 0; i < rawRows.length; i++) {

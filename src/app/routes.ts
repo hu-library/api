@@ -9,7 +9,6 @@ export const router = Router();
 
 router.use(sheet.setBooks);
 router.get('/', sheet.getAllRows);
-router.get('/write', sheet.writeAllRows);
 
 router.param('book', location.getBook);
 router.post('/searched/:book', location.updateSearchedLocation);

@@ -82,6 +82,9 @@ class Book {
         return result;
     }
     SearchCount(column) {
+        if (this.title.includes('HTML')) {
+            console.log(column);
+        }
         if (column && column.trim()) {
             this.searchCount = Number.parseInt(column.trim(), 10);
         }

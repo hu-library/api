@@ -15,7 +15,6 @@ const status = __importStar(require("./middleware/status"));
 exports.router = express_1.Router();
 exports.router.use(sheet.setBooks);
 exports.router.get('/', sheet.getAllRows);
-exports.router.get('/write', sheet.writeAllRows);
 exports.router.param('book', location.getBook);
 exports.router.post('/searched/:book', location.updateSearchedLocation);
 exports.router.post('/status/:book', status.updateBookStatus);
