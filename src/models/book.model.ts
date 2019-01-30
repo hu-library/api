@@ -209,7 +209,7 @@ export class Book {
         if (status.trim()) {
             return status as SearchStatus;
         }
-        return 'Began searching';
+        return 'Not searched for yet';
     }
 
     private Timestamp(timestamp: string) {

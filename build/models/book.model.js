@@ -170,7 +170,7 @@ class Book {
         if (status.trim()) {
             return status;
         }
-        return 'Began searching';
+        return 'Not searched for yet';
     }
     Timestamp(timestamp) {
         if (timestamp.trim()) {
