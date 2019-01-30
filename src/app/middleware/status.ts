@@ -28,13 +28,27 @@ export function updateBookStatus(req: Request, res: Response) {
             sheetsAPI.setData(searchCount, {
                 majorDimension: 'COLUMNS',
                 range: {
-                    startCol: columns.searchCount,
+                    startCol: columns.searchCount + 1,
                     startRow: res.locals.book + 1
                 }
             }, (err) => {
-                if (err) { console.log(err); }
+                if (err) {
+                    console.log(err);
+                } else {
+                    updateSearchStatus();
+                }
             });
+        } else {
+            updateSearchStatus();
         }
+    } else {
+        res.status(404).json({
+            error: 'Book not found',
+            code: 404
+        });
+    }
+
+    function updateSearchStatus() {
         const data = [[status]];
         sheetsAPI.setData(data, {
             majorDimension: 'COLUMNS',
@@ -49,11 +63,6 @@ export function updateBookStatus(req: Request, res: Response) {
             } else if (response) {
                 res.status(200).json(response);
             }
-        });
-    } else {
-        res.status(404).json({
-            error: 'Book not found',
-            code: 404
         });
     }
 }

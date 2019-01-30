@@ -12,7 +12,6 @@ const spreadsheetID = '1HgFqak5AUZBnSCHBkKvKiGsHw8TEq7MVLWdW5SP6Eks';
 const mainSheetID = 1128497297;
 const colorKeySheetID = 539679140;
 const attributeSheetID = 1037601079;
-console.log(credentials_1.default);
 exports.authClass = new google_sheets_manager_1.ServiceAccount(credentials_1.default);
 exports.authClass.ensureValid((err, res) => {
     if (err) {

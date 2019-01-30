@@ -9,8 +9,6 @@ const mainSheetID = 1128497297;
 const colorKeySheetID = 539679140;
 const attributeSheetID = 1037601079;
 
-console.log(creds);
-
 export const authClass = new ServiceAccount(creds);
 authClass.ensureValid((err, res) => {
     if (err) {
