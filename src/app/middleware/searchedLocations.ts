@@ -14,6 +14,7 @@ interface Response extends Res {
 }
 
 export function getBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
+    console.log(callNumber);
     for (const book of books) {
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
             res.locals.book = book.getRowNumber();

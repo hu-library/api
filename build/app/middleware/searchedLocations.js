@@ -5,6 +5,7 @@ const _1 = require("./");
 const columns_1 = require("../../models/columns");
 const searchLocations_type_1 = require("../../models/searchLocations.type");
 function getBook(req, res, next, callNumber) {
+    console.log(callNumber);
     for (const book of _1.books) {
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
             res.locals.book = book.getRowNumber();
