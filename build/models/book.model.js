@@ -56,6 +56,9 @@ class Book {
         }
         return obj;
     }
+    getTitle() {
+        return this.title;
+    }
     getSearchCount() {
         return this.searchCount;
     }

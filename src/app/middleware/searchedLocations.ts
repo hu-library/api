@@ -16,7 +16,14 @@ interface Response extends Res {
 export function getBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
     console.log(callNumber);
     for (const book of books) {
+        if (book.getTitle() === 'Remember') {
+            console.log(book.toJSON());
+            console.log('CALL NUMBER COMPARISON');
+            console.log('old', book.getCallNumber().replace(/ /g, '-'));
+            console.log('new', callNumber);
+        }
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
+            console.log('setting locals');
             res.locals.book = book.getRowNumber();
             res.locals.status = book.getStatus();
             res.locals.searchCount = book.getSearchCount();
