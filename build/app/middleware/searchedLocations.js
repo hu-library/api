@@ -5,14 +5,7 @@ const _1 = require("./");
 const columns_1 = require("../../models/columns");
 const searchLocations_type_1 = require("../../models/searchLocations.type");
 function getBook(req, res, next, callNumber) {
-    console.log(callNumber);
     for (const book of _1.books) {
-        if (book.getTitle() === 'Remember') {
-            console.log(book.toJSON());
-            console.log('CALL NUMBER COMPARISON');
-            console.log('old', book.getCallNumber().replace(/ /g, '-'));
-            console.log('new', callNumber);
-        }
         if (callNumber === book.getCallNumber().replace(/ /g, '-')) {
             console.log('setting locals');
             res.locals.book = book.getRowNumber();

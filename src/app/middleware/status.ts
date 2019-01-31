@@ -11,7 +11,8 @@ function checkStatus(status: string) {
             status === 'Stop searching' ||
             status === 'Recordkeeping/Withdrawals' ||
             status === 'Not searched for yet' ||
-            status === 'Began searching') {
+            status === 'Began searching' ||
+            status === 'Delay searching') {
             return status;
         } else {
             return '';
