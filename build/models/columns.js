@@ -26,5 +26,8 @@ exports.columns = {
     searchCount: 21,
     searchLocations: 22,
     swappedLetters: 23,
+    title2: 24,
+    author2: 25,
+    foundLocation: 26
 };
 //# sourceMappingURL=columns.js.map

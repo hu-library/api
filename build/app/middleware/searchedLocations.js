@@ -62,4 +62,28 @@ function updateSearchedLocation(req, res) {
     }
 }
 exports.updateSearchedLocation = updateSearchedLocation;
+function setFoundLocation(req, res) {
+    if (res.locals.book && req.body.foundLocation) {
+        const data = [[req.body.foundLocation]];
+        index_1.sheetsAPI.setData(data, {
+            majorDimension: 'COLUMNS',
+            range: {
+                startCol: columns_1.columns.foundLocation + 1,
+                startRow: res.locals.book + 1
+            }
+        }, (err, response) => {
+            if (err) {
+                console.log(err);
+                res.status(404).json(err);
+            }
+            else if (response) {
+                res.status(200).json(response);
+            }
+        });
+    }
+    else {
+        res.status(404).json('Book not found');
+    }
+}
+exports.setFoundLocation = setFoundLocation;
 //# sourceMappingURL=searchedLocations.js.map

@@ -20,4 +20,5 @@ exports.router.post('/searched/:book', location.updateSearchedLocation);
 exports.router.post('/status/:book', status.updateBookStatus);
 exports.router.post('/decision', email.decision);
 exports.router.post('/look-again', email.lookAgain);
+exports.router.post('/location/:book', location.setFoundLocation);
 //# sourceMappingURL=routes.js.map

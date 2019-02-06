@@ -15,3 +15,4 @@ router.post('/searched/:book', location.updateSearchedLocation);
 router.post('/status/:book', status.updateBookStatus);
 router.post('/decision', email.decision);
 router.post('/look-again', email.lookAgain);
+router.post('/location/:book', location.setFoundLocation);

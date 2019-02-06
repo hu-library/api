@@ -69,3 +69,25 @@ export function updateSearchedLocation(req: Request, res: Response) {
         });
     }
 }
+
+export function setFoundLocation(req: Request, res: Response) {
+    if (res.locals.book && req.body.foundLocation) {
+        const data = [ [ req.body.foundLocation ] ];
+        sheetsAPI.setData(data, {
+            majorDimension: 'COLUMNS',
+            range: {
+                startCol: columns.foundLocation + 1,
+                startRow: res.locals.book + 1
+            }
+        }, (err, response) => {
+            if (err) {
+                console.log(err);
+                res.status(404).json(err);
+            } else if (response) {
+                res.status(200).json(response);
+            }
+        });
+    } else {
+        res.status(404).json('Book not found');
+    }
+}
