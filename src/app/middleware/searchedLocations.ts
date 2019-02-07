@@ -1,5 +1,5 @@
 import { Request, Response as Res, NextFunction } from 'express';
-import { sheetsAPI, backendURL } from '../../config/index';
+import { sheetsAPI } from '../../config/index';
 import { books } from './';
 import { columns } from '../../models/columns';
 import { createLocationAcronym, SearchLocation } from '../../models/searchLocations.type';

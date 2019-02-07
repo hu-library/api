@@ -4,11 +4,14 @@ import * as sheet from './middleware';
 import * as email from './middleware/email';
 import * as location from './middleware/searchedLocations';
 import * as status from './middleware/status';
+import * as inventory from './middleware/inventory';
 
 export const router = Router();
 
 router.use(sheet.setBooks);
+router.use(inventory.setInventory);
 router.get('/', sheet.getAllRows);
+router.get('/inventory', inventory.getInventory);
 
 router.param('book', location.getBook);
 router.post('/searched/:book', location.updateSearchedLocation);
