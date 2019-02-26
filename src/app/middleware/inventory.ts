@@ -11,6 +11,7 @@ export function setInventory(req: Request, res: Response, next: NextFunction) {
             res.status(404).json(err);
         } else if (response) {
             addBooks(response);
+            next();
         }
     });
 }

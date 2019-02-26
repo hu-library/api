@@ -11,6 +11,7 @@ function setInventory(req, res, next) {
         }
         else if (response) {
             addBooks(response);
+            next();
         }
     });
 }
