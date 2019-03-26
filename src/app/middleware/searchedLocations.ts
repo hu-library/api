@@ -3,7 +3,7 @@ import { sheetsAPI } from '../../config/index';
 import { books } from './';
 import { columns } from '../../models/columns';
 import { createLocationAcronym, SearchLocation } from '../../models/searchLocations.type';
-import { SearchStatus } from '../../models/searchstatus.enum';
+import { SearchStatus } from '../../models/searchStatus.enum';
 
 interface Response extends Res {
     locals: {

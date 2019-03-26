@@ -1,4 +1,4 @@
-import { SearchStatus } from './searchstatus.enum';
+import { SearchStatus } from './searchStatus.enum';
 import { ItemType } from './itemType.type';
 import { Patron } from './patron.model';
 import { ElectronicCopy } from './electronicCopy.type';
