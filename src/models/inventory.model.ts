@@ -7,8 +7,9 @@ export class InventoryBook {
     private lastSeen: Date;
     private tempLocation: string;
     private createDate: Date;
+    private rowNumber: number;
 
-    constructor(row: string[]) {
+    constructor(row: string[], rowNumber: number) {
         this.location = row[0].trim();
         this.callNumber = row[1].trim().replace(/ /g, '-');
         this.title = row[2].trim();
@@ -17,6 +18,7 @@ export class InventoryBook {
         this.lastSeen = new Date(row[5].trim());
         this.tempLocation = row[6].trim();
         this.createDate = new Date(row[7].trim());
+        this.rowNumber = rowNumber;
     }
 
     public toJSON() {
@@ -28,9 +30,13 @@ export class InventoryBook {
             status: this.status,
             lastSeen: this.lastSeen.toLocaleDateString(),
             tempLocation: this.tempLocation,
-            createDate: this.createDate.toLocaleDateString()
+            createDate: this.createDate.toLocaleDateString(),
+            rowNumber: this.rowNumber
         };
     }
+
+    public getBarcode() { return this.barcode }
+    public getRowNumber() { return this.rowNumber }
 }
 
 const inventoryColumns = {

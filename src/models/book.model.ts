@@ -77,29 +77,19 @@ export class Book {
         return obj;
     }
 
-    public getTitle() {
-        return this.title;
-    }
+    public getTitle() { return this.title }
 
-    public getSearchCount() {
-        return this.searchCount;
-    }
+    public getSearchCount() { return this.searchCount }
 
-    public getCallNumber() {
-        return this.callNumber;
-    }
+    public getCallNumber() { return this.callNumber }
 
-    public getRowNumber() {
-        return this.rowNumber;
-    }
+    public getRowNumber() { return this.rowNumber }
 
     public updateSearchStatus(status: string) {
         this.searchStatus = this.SearchStatus(status);
     }
 
-    public getStatus() {
-        return this.searchStatus;
-    }
+    public getStatus() { return this.searchStatus }
 
     private SearchedLocations(column: string): Map<SearchLocation, boolean> {
         const result = new Map<SearchLocation, boolean>();
