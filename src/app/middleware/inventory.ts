@@ -2,6 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { inventorySheetAPI } from '../../config';
 import { InventoryBook } from '../../models/inventory.model';
 import { resolveSoa } from 'dns';
+import { SearchLocation, createLocationAcronym } from '../../models/searchLocations.type';
 
 const inventoryBooks: InventoryBook[] = [];
 
@@ -53,9 +54,29 @@ export function getInventoryBook(req: Request, res: Response, next: NextFunction
     next();
 }
 
+function getAcronymsArrayAsString(locations: SearchLocation[]) {
+    if (!locations) {
+        return '';
+    }
+    const array = [];
+    for (const loc of locations) {
+        array.push(createLocationAcronym(loc));
+    }
+    array.sort();
+    let result = '';
+    for (const loc of array) {
+        if (loc !== 'HM') {
+            result += loc + ', ';
+        }
+    }
+    result = result.substring(0, result.length - 2);
+    return result;
+}
+
 export function addSearchLocations(req: Request, res: Response, next: NextFunction) {
-    if (req.body.locations && res.locals.book) {
-        const data = [ [ req.body.locations ] ];
+    const locations = getAcronymsArrayAsString(req.body.locations);
+    if (locations !== '' && res.locals.book) {
+        const data = [ [ locations ] ];
         const startRow = res.locals.book.getRowNumber() + 1;
         inventorySheetAPI.setData(data, {
             majorDimension: 'COLUMNS',
