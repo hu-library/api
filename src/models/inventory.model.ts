@@ -35,7 +35,7 @@ export class InventoryBook {
         };
     }
 
-    public getBarcode() { return this.barcode }
+    public getCallNumber() { return this.callNumber }
     public getRowNumber() { return this.rowNumber }
 }
 

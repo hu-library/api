@@ -45,9 +45,10 @@ function parseRows() {
     return result;
 }
 
-export function getInventoryBook(req: Request, res: Response, next: NextFunction, barcode: string) {
+export function getInventoryBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
+    callNumber = callNumber.replace(/\s+/g, ' ');
     for (const book of inventoryBooks) {
-        if (book.getBarcode() === Number.parseInt(barcode)) {
+        if (book.getCallNumber() === callNumber) {
             res.locals.book = book;
         }
     }
@@ -94,6 +95,9 @@ export function addSearchLocations(req: Request, res: Response, next: NextFuncti
         });
     }
     else {
-        res.send('else');
+        res.status(404).json({
+            error: 'Inventory book not found',
+            code: 404
+        });
     }
 }
