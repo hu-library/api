@@ -110,7 +110,7 @@ export function addSearchLocations(req: Request, res: Response) {
 
 export function bookFound(req: Request, res: Response) {
     if (req.body.book && res.locals.book) {
-        const data = [ [ 'Found' ] ];
+        const data = [ [ req.body.book ] ];
         const startRow = res.locals.book.getRowNumber() + 1;
         inventorySheetAPI.setData(data, {
             majorDimension: 'COLUMNS',
