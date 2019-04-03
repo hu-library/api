@@ -3,7 +3,8 @@
     "start": "node build",
     "lint": "tslint -p src",
     "build": "tsc -p src",
-    "git": "git fetch && git pull && yarn"
+    "git": "git fetch && git pull && yarn",
+    "dev": "yarn lint && yarn build && yarn start"
   },
   "repository": {
     "type": "git",

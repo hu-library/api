@@ -35,8 +35,10 @@ export class InventoryBook {
         };
     }
 
-    public getCallNumber() { return this.callNumber }
-    public getRowNumber() { return this.rowNumber }
+    public getCallNumber() { return this.callNumber; }
+    public getTitle() { return this.title; }
+    public getBarcode() { return this.barcode; }
+    public getRowNumber() { return this.rowNumber; }
 }
 
 const inventoryColumns = {

@@ -1,7 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
-import { inventorySheetAPI } from '../../config';
+import { inventorySheetAPI, missingInventoryAPI } from '../../config';
 import { InventoryBook } from '../../models/inventory.model';
-import { resolveSoa } from 'dns';
 import { SearchLocation, createLocationAcronym } from '../../models/searchLocations.type';
 
 const inventoryBooks: InventoryBook[] = [];
@@ -45,12 +44,20 @@ function parseRows() {
     return result;
 }
 
-export function getInventoryBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
-    callNumber = callNumber.replace(/\s+/g, ' ');
+function getBookByCallNumber(callNumber: string) {
     for (const book of inventoryBooks) {
         if (book.getCallNumber() === callNumber) {
-            res.locals.book = book;
+            return book;
         }
+    }
+    return null;
+}
+
+export function getInventoryBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
+    callNumber = callNumber.replace(/\s+/g, ' ');
+    const book = getBookByCallNumber(callNumber);
+    if (book) {
+        res.locals.book = book;
     }
     next();
 }
@@ -74,10 +81,10 @@ function getAcronymsArrayAsString(locations: SearchLocation[]) {
     return result;
 }
 
-export function addSearchLocations(req: Request, res: Response, next: NextFunction) {
+export function addSearchLocations(req: Request, res: Response) {
     const locations = getAcronymsArrayAsString(req.body.locations);
     if (locations !== '' && res.locals.book) {
-        const data = [ [ locations ] ];
+        const data = [[locations]];
         const startRow = res.locals.book.getRowNumber() + 1;
         inventorySheetAPI.setData(data, {
             majorDimension: 'COLUMNS',
@@ -93,10 +100,57 @@ export function addSearchLocations(req: Request, res: Response, next: NextFuncti
                 res.status(200).json(response);
             }
         });
-    }
-    else {
+    } else {
         res.status(404).json({
             error: 'Inventory book not found',
+            code: 404
+        });
+    }
+}
+
+export function getInventoryRowAndBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
+    callNumber = callNumber.replace(/\s+/g, ' ');
+    missingInventoryAPI.getData((err, response) => {
+        if (err) {
+            res.status(404).json(err);
+        } else if (response) {
+            let count = 0;
+            for (const item of response) {
+                if (item && item[0] && item[0] !== '' && item !== response[0]) { count++; }
+            }
+            res.locals.count = count;
+            console.log(`Count = ${count}`);
+            const book = getBookByCallNumber(callNumber);
+            if (book) {
+                res.locals.book = book;
+            }
+            console.log(res.locals.book, res.locals.count);
+            next();
+        }
+    });
+}
+
+export function addBookToMissing(req: Request, res: Response) {
+    if (req.body.book && res.locals.book) {
+        const startRow = res.locals.count + 2; // Adding 2 one for title row, one because sheets' index starts at 1
+        const data = [[res.locals.book.getCallNumber().replace(/-/g, ' ')], [res.locals.book.getTitle()], [res.locals.book.getBarcode()]];
+        missingInventoryAPI.setData(data, {
+            majorDimension: 'COLUMNS',
+            range: {
+                startCol: 0,
+                startRow
+            }
+        }, (err, response) => {
+            if (err) {
+                console.log(err);
+                res.status(404).json(err);
+            } else if (response) {
+                res.status(200).json(response);
+            }
+        });
+    } else {
+        res.status(404).json({
+            error: 'Book not found',
             code: 404
         });
     }

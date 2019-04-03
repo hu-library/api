@@ -1,7 +1,7 @@
 import * as email from 'nodemailer';
 import { user, pass, to } from '../../config/email';
 import { subjectStart } from '../../config';
-import { Response, NextFunction, Request } from 'express';
+import { Response, Request } from 'express';
 
 const transporter = email.createTransport({
     service: 'gmail',

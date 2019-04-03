@@ -47,8 +47,8 @@ function getAcronymsArrayAsString(locations: SearchLocation[]) {
 export function updateSearchedLocation(req: Request, res: Response) {
     const locations = getAcronymsArrayAsString(req.body.locations);
     if (res.locals.book && locations !== '') {
-        const data = [ [ locations ] ];
-        sheetsAPI.setData(data,  {
+        const data = [[locations]];
+        sheetsAPI.setData(data, {
             majorDimension: 'COLUMNS',
             range: {
                 startCol: columns.searchLocations + 1,
@@ -72,7 +72,7 @@ export function updateSearchedLocation(req: Request, res: Response) {
 
 export function setFoundLocation(req: Request, res: Response) {
     if (res.locals.book && req.body.foundLocation) {
-        const data = [ [ req.body.foundLocation ] ];
+        const data = [[req.body.foundLocation]];
         sheetsAPI.setData(data, {
             majorDimension: 'COLUMNS',
             range: {
