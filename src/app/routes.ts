@@ -15,6 +15,7 @@ router.get('/', sheet.getAllRows);
 router.get('/inventory', inventory.getInventory);
 router.param('iBook', inventory.getInventoryBook);
 router.post('/inventory/searched/:iBook', inventory.addSearchLocations);
+router.post('/inventory/found/:iBook', inventory.bookFound);
 router.param('inv', inventory.getInventoryRowAndBook);
 router.post('/inventory/missing/:inv', inventory.addBookToMissing);
 

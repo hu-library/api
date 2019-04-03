@@ -33,7 +33,7 @@ function addBooks(response: string[][]) {
 }
 
 function checkRow(row: string[]) {
-    return (row[0].trim() !== '' && row[1].trim() !== '');
+    return (row[0].trim() !== '' && row[1].trim() !== '' && !row[10]);
 }
 
 function parseRows() {
@@ -108,6 +108,32 @@ export function addSearchLocations(req: Request, res: Response) {
     }
 }
 
+export function bookFound(req: Request, res: Response) {
+    if (req.body.book && res.locals.book) {
+        const data = [ [ 'Found' ] ];
+        const startRow = res.locals.book.getRowNumber() + 1;
+        inventorySheetAPI.setData(data, {
+            majorDimension: 'COLUMNS',
+            range: {
+                startCol: 11,
+                startRow
+            }
+        }, (err, response) => {
+            if (err) {
+                console.log(err);
+                res.status(404).json(err);
+            } else if (response) {
+                res.status(200).json(response);
+            }
+        });
+    } else {
+        res.status(404).json({
+            error: 'Inventory book not found',
+            code: 404
+        });
+    }
+}
+
 export function getInventoryRowAndBook(req: Request, res: Response, next: NextFunction, callNumber: string) {
     callNumber = callNumber.replace(/\s+/g, ' ');
     missingInventoryAPI.getData((err, response) => {
@@ -119,12 +145,10 @@ export function getInventoryRowAndBook(req: Request, res: Response, next: NextFu
                 if (item && item[0] && item[0] !== '' && item !== response[0]) { count++; }
             }
             res.locals.count = count;
-            console.log(`Count = ${count}`);
             const book = getBookByCallNumber(callNumber);
             if (book) {
                 res.locals.book = book;
             }
-            console.log(res.locals.book, res.locals.count);
             next();
         }
     });
